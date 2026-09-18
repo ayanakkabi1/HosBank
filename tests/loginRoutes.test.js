@@ -91,4 +91,25 @@ describe('loginRoutes - HTTP Requests', () => {
 
         expect(response.status).toBe(400);
     });
+
+    test('GET /auth/logout - détruit la session et redirige vers la connexion', async () => {
+        const agent = request.agent(app);
+        loginService.authenticate.mockResolvedValue({
+            id: 1,
+            email: 'client@hosbank.com',
+            role: 'client'
+        });
+
+        await agent
+            .post('/auth/login')
+            .send({ email: 'client@hosbank.com', password: 'password123' });
+
+        const response = await agent.get('/auth/logout');
+
+        expect(response.status).toBe(302);
+        expect(response.header.location).toBe('/auth/login');
+        expect(response.headers['set-cookie']).toEqual(
+            expect.arrayContaining([expect.stringContaining('connect.sid=;')])
+        );
+    });
 });
