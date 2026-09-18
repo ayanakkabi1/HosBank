@@ -29,3 +29,14 @@ export const processLogin = async (req, res) => {
     res.status(400).render("auth/login", { error: error.message });
   }
 };
+
+export const logout = (req, res) => {
+  req.session.destroy((error) => {
+    if (error) {
+      return res.status(500).send('Erreur lors de la déconnexion.');
+    }
+
+    res.clearCookie('connect.sid');
+    res.redirect('/auth/login');
+  });
+};
