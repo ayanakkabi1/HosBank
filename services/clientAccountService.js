@@ -23,3 +23,12 @@ export const requestSavingsAccount = async (clientId) => {
 
     return await clientAccountRepository.createDemande(clientId, 'ouverture_compte_epargne');
 };
+
+export const getClientAccountRib = async (clientId, accountId) => {
+    const account = await clientAccountRepository.findAccountByIdAndClient(accountId, clientId);
+    if (!account) {
+        throw new Error('Compte introuvable.');
+    }
+
+    return account.rib;
+};
