@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 import sessionConfig from './config/session.config.js';
 import registerRoute from './routes/registerRoute.js';
 import loginRoutes from './routes/loginRoutes.js';
+import clientRoutes from './routes/clientRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,6 +27,7 @@ app.use(session(sessionConfig));
 // Montage des routes
 app.use('/auth', registerRoute);
 app.use('/auth', loginRoutes);
+app.use('/client', clientRoutes);
 
 // Redirection par défaut
 app.get('/', (req, res) => {
