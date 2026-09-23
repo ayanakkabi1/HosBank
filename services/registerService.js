@@ -9,7 +9,23 @@ import {
     activateUserAccount
 } from '../repositories/registerRepository.js';
 
+import {
+    createCompte,
+    getComptesByClientId
+} from '../repositories/compteRepository.js';
+
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/**
+ * Génère un RIB marocain standard de 24 chiffres
+ */
+export const generateRib = () => {
+    let randomDigits = '';
+    for (let i = 0; i < 21; i++) {
+        randomDigits += Math.floor(Math.random() * 10);
+    }
+    return `230${randomDigits}`;
+};
 
 export const register = async (
     nom,
@@ -62,10 +78,14 @@ export const register = async (
         verificationToken
     );
 
+    // Création automatique d'un compte courant avec 1000 MAD de bienvenue
+    const defaultRib = generateRib();
+    await createCompte(defaultRib, userId, 1000.00, 'courant');
+
     // Envoi de l'e-mail de confirmation
     await sendVerificationEmail(cleanEmail, verificationToken);
 
-    return { userId, verificationToken };
+    return { userId, verificationToken, rib: defaultRib };
 };
 
 export const verifyEmailToken = async (token) => {
@@ -81,6 +101,12 @@ export const verifyEmailToken = async (token) => {
     const activated = await activateUserAccount(token);
     if (!activated) {
         throw new Error('Impossible d\'activer le compte. Veuillez réessayer.');
+    }
+
+    // Sécurité : s'assure qu'un compte courant existe pour ce client
+    const comptes = await getComptesByClientId(user.id);
+    if (!comptes || comptes.length === 0) {
+        await createCompte(generateRib(), user.id, 1000.00, 'courant');
     }
 
     return user;
