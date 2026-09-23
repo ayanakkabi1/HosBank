@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Bénéficiaires - HosBank</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --navy-dark: #0f172a;
+            --slate-800: #1e293b;
+            --slate-600: #475569;
+            --slate-400: #94a3b8;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            --success: #10b981;
+            --success-bg: #ecfdf5;
+            --danger: #ef4444;
+            --danger-bg: #fef2f2;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+        body { background-color: var(--slate-50); color: var(--navy-dark); min-height: 100vh; }
+
+        /* Navbar */
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid var(--slate-200);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .navbar-brand {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--navy-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar-brand span { color: var(--primary); }
+
+        .btn-logout {
+            padding: 8px 14px;
+            border: 1px solid var(--slate-200);
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--slate-600);
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+
+        .btn-logout:hover { background-color: var(--danger-bg); color: var(--danger); border-color: #fca5a5; }
+
+        /* Container */
+        .container { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .page-subtitle { font-size: 14px; color: var(--slate-600); margin-bottom: 28px; }
+
+        /* Alertes */
+        .alert {
+            padding: 14px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-danger { background-color: var(--danger-bg); border: 1px solid #fecaca; color: #991b1b; }
+        .alert-success { background-color: var(--success-bg); border: 1px solid #a7f3d0; color: #065f46; }
+
+        /* Formulaire */
+        .card {
+            background: #fff;
+            border: 1px solid var(--slate-200);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 28px;
+        }
+
+        .card-title { font-size: 16px; font-weight: 600; margin-bottom: 18px; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 14px; align-items: end; }
+
+        @media (max-width: 640px) { .form-row { grid-template-columns: 1fr; } }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--slate-800);
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 14px;
+            border: 1px solid var(--slate-200);
+            border-radius: 8px;
+            background-color: #fff;
+            color: var(--navy-dark);
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .btn-primary {
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-primary:hover { background-color: var(--primary-dark); }
+
+        /* Liste des bénéficiaires */
+        .beneficiaire-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .beneficiaire-item {
+            background: #fff;
+            border: 1px solid var(--slate-200);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: border-color 0.2s;
+        }
+
+        .beneficiaire-item:hover { border-color: #cbd5e1; }
+
+        .beneficiaire-info { display: flex; flex-direction: column; gap: 4px; }
+
+        .beneficiaire-nom { font-size: 15px; font-weight: 600; color: var(--navy-dark); }
+
+        .beneficiaire-rib { font-size: 12px; font-family: monospace; color: var(--slate-600); }
+
+        .btn-delete {
+            padding: 7px 14px;
+            background-color: var(--danger-bg);
+            color: var(--danger);
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-delete:hover { background-color: var(--danger); color: #fff; }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--slate-400);
+            font-size: 14px;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: var(--slate-600);
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
+        .btn-back:hover { color: var(--primary); }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="/client/dashboard" class="navbar-brand">
+            Hos<span>Bank</span>
+        </a>
+        <a href="/auth/logout" class="btn-logout">Déconnexion</a>
+    </header>
+
+    <main class="container">
+        <!-- Bouton retour -->
+        <a href="/client/dashboard" class="btn-back">← Retour au tableau de bord</a>
+
+        <div class="page-title">Mes Bénéficiaires</div>
+        <p class="page-subtitle">Gérez vos bénéficiaires pour effectuer des virements facilement.</p>
+
+        <!-- Alertes -->
+        <% if (error) { %>
+            <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+        <% if (success) { %>
+            <div class="alert alert-success"><%= success %></div>
+        <% } %>
+
+        <!-- Formulaire d'ajout -->
+        <div class="card">
+            <div class="card-title">Ajouter un bénéficiaire</div>
+            <form action="/client/beneficiaires" method="POST">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nom_beneficiaire">Nom complet</label>
+                        <input
+                            type="text"
+                            id="nom_beneficiaire"
+                            name="nom_beneficiaire"
+                            class="form-control"
+                            placeholder="ex: Mohamed Alami"
+                            required
+                        >
+                    </div>
+                    <div class="form-group">
+                        <label for="rib">RIB (24 chiffres)</label>
+                        <input
+                            type="text"
+                            id="rib"
+                            name="rib"
+                            class="form-control"
+                            placeholder="ex: 230000123456789012345678"
+                            maxlength="24"
+                            required
+                        >
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn-primary">Ajouter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Liste des bénéficiaires -->
+        <div class="card-title">Liste des bénéficiaires (<%= beneficiaires.length %>)</div>
+
+        <% if (beneficiaires && beneficiaires.length > 0) { %>
+            <div class="beneficiaire-list">
+                <% beneficiaires.forEach(function(b) { %>
+                    <div class="beneficiaire-item">
+                        <div class="beneficiaire-info">
+                            <span class="beneficiaire-nom"><%= b.nom_beneficiaire %></span>
+                            <span class="beneficiaire-rib">RIB : <%= b.rib %></span>
+                        </div>
+                        <form action="/client/beneficiaires/<%= b.id %>/delete" method="POST">
+                            <button type="submit" class="btn-delete"
+                                onclick="return confirm('Voulez-vous supprimer ce bénéficiaire ?')">
+                                Supprimer
+                            </button>
+                        </form>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="empty-state">
+                Aucun bénéficiaire enregistré pour le moment.
+            </div>
+        <% } %>
+    </main>
+</body>
+</html>
