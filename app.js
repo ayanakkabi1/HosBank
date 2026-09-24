@@ -8,6 +8,7 @@ import loginRoutes from './routes/loginRoutes.js';
 import clientRoutes from './routes/clientRoutes.js';
 import beneficiaireRoutes from './routes/beneficiaireRoutes.js';
 import carteRoutes from './routes/carteRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,6 +33,7 @@ app.use('/auth', loginRoutes);
 app.use('/client', clientRoutes);
 app.use('/client/beneficiaires', beneficiaireRoutes);
 app.use('/client/carte', carteRoutes);
+app.use('/admin', adminRoutes);
 
 // Redirection par défaut
 app.get('/', (req, res) => {
