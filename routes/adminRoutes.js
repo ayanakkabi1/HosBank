@@ -33,4 +33,19 @@ router.post('/comptes/:id/toggle-status', handleToggleCompteStatus);
 router.post('/cartes', handleCreateCarte);
 router.post('/cartes/:id/toggle-status', handleToggleCarteStatus);
 
+// Consultation globale, virements, demandes, réclamations et statistiques (HOS-75)
+import {
+    getPlatformStats,
+    getVirementsList,
+    getDemandesList,
+    getReclamationsList,
+    getSupervisionList
+} from '../controllers/adminStatsController.js';
+
+router.get('/api/stats', getPlatformStats);
+router.get('/api/virements', getVirementsList);
+router.get('/api/demandes', getDemandesList);
+router.get('/api/reclamations', getReclamationsList);
+router.get('/api/supervision', getSupervisionList);
+
 export default router;
