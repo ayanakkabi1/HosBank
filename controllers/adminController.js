@@ -93,7 +93,7 @@ export const handleToggleCompteStatus = async (req, res) => {
     try {
         const { id } = req.params;
         const newStatus = await adminService.toggleCompteStatus(id);
-        const msg = newStatus === 'actif' ? 'Compte bancaire réactivé.' : 'Compte bancaire bloqué.';
+        const msg = newStatus === 'actif' ? 'Compte bancaire activé avec succès.' : 'Compte bancaire bloqué.';
         res.redirect(`/admin/users?tab=comptes&success=${encodeURIComponent(msg)}`);
     } catch (error) {
         res.redirect(`/admin/users?tab=comptes&error=${encodeURIComponent(error.message)}`);

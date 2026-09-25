@@ -80,7 +80,7 @@ export const register = async (
 
     
     const defaultRib = generateRib();
-    await createCompte(defaultRib, userId, 1000.00, 'courant');
+    await createCompte(defaultRib, userId, 1000.00, 'courant', 'inactif');
 
     
     await sendVerificationEmail(cleanEmail, verificationToken);
@@ -106,7 +106,7 @@ export const verifyEmailToken = async (token) => {
     
     const comptes = await getComptesByClientId(user.id);
     if (!comptes || comptes.length === 0) {
-        await createCompte(generateRib(), user.id, 1000.00, 'courant');
+        await createCompte(generateRib(), user.id, 1000.00, 'courant', 'inactif');
     }
 
     return user;

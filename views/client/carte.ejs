@@ -3,137 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demande de Carte Virtuelle - HosBank</title>
+    <title>Demande de Carte Virtuelle - HosBank Private Banking</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/theme.css">
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --navy-dark: #0f172a;
-            --slate-800: #1e293b;
-            --slate-600: #475569;
-            --slate-400: #94a3b8;
-            --slate-200: #e2e8f0;
-            --slate-100: #f1f5f9;
-            --slate-50: #f8fafc;
-            --success: #10b981;
-            --success-bg: #ecfdf5;
-            --danger: #ef4444;
-            --danger-bg: #fef2f2;
-            --warning: #f59e0b;
-            --warning-bg: #fffbeb;
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-
-        body { background-color: var(--slate-50); color: var(--navy-dark); min-height: 100vh; }
-
-        
-        .navbar {
-            background: #fff;
-            border-bottom: 1px solid var(--slate-200);
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 50;
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 24px 64px;
         }
-
-        .navbar-brand {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--navy-dark);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .navbar-brand span { color: var(--primary); }
-
-        .btn-logout {
-            padding: 8px 14px;
-            border: 1px solid var(--slate-200);
-            border-radius: 8px;
-            font-size: 13px;
-            color: var(--slate-600);
-            text-decoration: none;
-            transition: all 0.15s ease;
-        }
-
-        .btn-logout:hover { background-color: var(--danger-bg); color: var(--danger); border-color: #fca5a5; }
-
-        
-        .container { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
 
         .btn-back {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            font-size: 14px;
-            color: var(--slate-600);
+            font-size: 13.5px;
+            color: var(--text-muted);
             text-decoration: none;
             margin-bottom: 20px;
-            font-weight: 500;
-            transition: color 0.15s;
+            transition: var(--transition);
         }
 
-        .btn-back:hover { color: var(--primary); }
+        .btn-back:hover {
+            color: var(--gold-light);
+        }
 
         .page-title {
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-main);
             margin-bottom: 6px;
         }
 
-        .page-subtitle { font-size: 14px; color: var(--slate-600); margin-bottom: 28px; }
-
-        
-        .alert {
-            padding: 14px 16px;
-            border-radius: 10px;
+        .page-subtitle {
             font-size: 14px;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            color: var(--text-muted);
+            margin-bottom: 28px;
         }
 
-        .alert-danger { background-color: var(--danger-bg); border: 1px solid #fecaca; color: #991b1b; }
-        .alert-success { background-color: var(--success-bg); border: 1px solid #a7f3d0; color: #065f46; }
-
-        
         .card-preview-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            background: #fff;
-            border: 1px solid var(--slate-200);
-            border-radius: 16px;
-            padding: 28px;
-            margin-bottom: 32px;
+            gap: 28px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
+            padding: 32px;
+            margin-bottom: 36px;
             align-items: center;
+            box-shadow: var(--shadow-card);
         }
 
         @media (max-width: 768px) {
-            .card-preview-section { grid-template-columns: 1fr; }
+            .card-preview-section {
+                grid-template-columns: 1fr;
+            }
         }
 
         
         .virtual-card {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #2563eb 100%);
-            border-radius: 16px;
+            background: linear-gradient(135deg, #1C1C1C 0%, #0E0E0E 60%, #151515 100%);
+            border: 1px solid var(--gold-border);
+            border-radius: 12px;
             padding: 24px;
-            color: #fff;
-            height: 200px;
+            color: var(--text-main);
+            height: 210px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.4);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), var(--gold-glow);
             position: relative;
             overflow: hidden;
         }
@@ -143,10 +89,10 @@
             position: absolute;
             top: -40px;
             right: -40px;
-            width: 140px;
-            height: 140px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(201, 162, 39, 0.15) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .card-top {
@@ -156,69 +102,79 @@
         }
 
         .card-logo {
-            font-weight: 700;
+            font-weight: 800;
             font-size: 16px;
             letter-spacing: 0.5px;
+            color: var(--text-main);
+        }
+
+        .card-logo span {
+            color: var(--gold-primary);
         }
 
         .card-chip {
-            width: 38px;
-            height: 28px;
-            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            width: 40px;
+            height: 30px;
+            background: linear-gradient(135deg, #D4AF37 0%, #AA8012 100%);
             border-radius: 6px;
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
         }
 
         .card-number {
-            font-size: 18px;
-            letter-spacing: 2px;
-            font-weight: 500;
-            color: #f8fafc;
+            font-size: 19px;
+            letter-spacing: 3px;
+            font-weight: 700;
+            color: var(--gold-light);
+            font-family: 'DM Sans', monospace;
         }
 
         .card-bottom {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            font-size: 12px;
+            font-size: 11.5px;
         }
 
         .card-holder {
             text-transform: uppercase;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            color: var(--text-secondary);
         }
 
         .card-badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 4px 8px;
+            background: var(--gold-muted);
+            border: 1px solid var(--gold-border);
+            color: var(--gold-light);
+            padding: 3px 8px;
             border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
-        
         .info-title {
             font-size: 18px;
             font-weight: 700;
-            color: var(--navy-dark);
-            margin-bottom: 12px;
+            color: var(--text-main);
+            margin-bottom: 10px;
         }
 
         .info-desc {
-            font-size: 14px;
-            color: var(--slate-600);
+            font-size: 13.5px;
+            color: var(--text-secondary);
             line-height: 1.6;
             margin-bottom: 18px;
         }
 
         .card-features {
             list-style: none;
-            margin-bottom: 22px;
+            margin-bottom: 24px;
             display: flex;
             flex-direction: column;
             gap: 8px;
             font-size: 13px;
-            color: var(--slate-800);
+            color: var(--text-secondary);
         }
 
         .card-features li {
@@ -228,91 +184,40 @@
         }
 
         .feature-icon {
-            color: var(--success);
+            color: var(--gold-light);
             font-weight: bold;
         }
 
-        .btn-submit-carte {
-            width: 100%;
-            padding: 12px 24px;
-            background-color: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.15s, transform 0.1s;
-        }
-
-        .btn-submit-carte:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .btn-submit-carte:active {
-            transform: scale(0.99);
-        }
-
-        
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
-
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
         .table-card {
-            background: #fff;
-            border: 1px solid var(--slate-200);
-            border-radius: 14px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
             overflow: hidden;
+            box-shadow: var(--shadow-card);
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
+        .badge-en_attente {
+            background-color: var(--warning-bg);
+            color: var(--gold-light);
+            border: 1px solid var(--warning-border);
         }
 
-        th {
-            background-color: var(--slate-100);
-            color: var(--slate-600);
-            font-weight: 600;
-            padding: 14px 18px;
-            text-align: left;
-            border-bottom: 1px solid var(--slate-200);
-            font-size: 13px;
+        .badge-validee {
+            background-color: var(--success-bg);
+            color: var(--success);
+            border: 1px solid var(--success-border);
         }
 
-        td {
-            padding: 14px 18px;
-            border-bottom: 1px solid var(--slate-200);
-            color: var(--slate-800);
+        .badge-refusee {
+            background-color: var(--danger-bg);
+            color: var(--danger);
+            border: 1px solid var(--danger-border);
         }
-
-        tr:last-child td { border-bottom: none; }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 9999px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .badge-en_attente { background-color: var(--warning-bg); color: #b45309; border: 1px solid #fde68a; }
-        .badge-validee { background-color: var(--success-bg); color: #047857; border: 1px solid #a7f3d0; }
-        .badge-refusee { background-color: var(--danger-bg); color: #b91c1c; border: 1px solid #fecaca; }
 
         .empty-state {
             text-align: center;
             padding: 40px 20px;
-            color: var(--slate-400);
+            color: var(--text-muted);
             font-size: 14px;
         }
     </style>
@@ -321,8 +226,16 @@
     
     <header class="navbar">
         <a href="/client/dashboard" class="navbar-brand">
-            Hos<span>Bank</span>
+            <div class="brand-icon">H</div>
+            <span>Hos<span>Bank</span></span>
         </a>
+
+        <nav class="navbar-nav">
+            <a href="/client/dashboard" class="nav-link">Tableau de bord</a>
+            <a href="/client/beneficiaires" class="nav-link">Bénéficiaires</a>
+            <a href="/client/carte" class="nav-link active">Carte Virtuelle</a>
+        </nav>
+
         <a href="/auth/logout" class="btn-logout">Déconnexion</a>
     </header>
 
@@ -330,7 +243,7 @@
         <a href="/client/dashboard" class="btn-back">← Retour au tableau de bord</a>
 
         <div class="page-title">Demande de Carte Virtuelle</div>
-        <p class="page-subtitle">Commandez votre carte bancaire virtuelle pour payer en ligne en toute sécurité.</p>
+        <p class="page-subtitle">Commandez votre carte bancaire virtuelle exclusive pour vos règlements en ligne sécurisés.</p>
 
         
         <% if (error) { %>
@@ -344,7 +257,7 @@
         <div class="card-preview-section">
             <div class="virtual-card">
                 <div class="card-top">
-                    <span class="card-logo">HosBank</span>
+                    <span class="card-logo">Hos<span>Bank</span></span>
                     <div class="card-chip"></div>
                 </div>
                 <div class="card-number">•••• •••• •••• ••••</div>
@@ -355,68 +268,71 @@
             </div>
 
             <div>
-                <div class="info-title">Paiements en ligne 100% sécurisés</div>
+                <div class="info-title">Paiements numériques sécurisés</div>
                 <p class="info-desc">
-                    Votre carte virtuelle vous permet de régler vos achats sur internet sans divulguer les coordonnées de votre carte physique.
+                    Votre carte virtuelle vous permet de régler vos transactions en ligne sans exposer les coordonnées de votre compte principal.
                 </p>
                 <ul class="card-features">
-                    <li><span class="feature-icon">✓</span> Plafond personnalisable jusqu'à 5 000 MAD</li>
-                    <li><span class="feature-icon">✓</span> Validation rapide par votre chargé de compte</li>
-                    <li><span class="feature-icon">✓</span> Blocage et gestion instantanés</li>
+                    <li><span class="feature-icon">✦</span> Plafond personnalisable jusqu'à 5 000 MAD</li>
+                    <li><span class="feature-icon">✦</span> Activation instantanée dès validation par votre conseiller</li>
+                    <li><span class="feature-icon">✦</span> Blocage et déblocage immédiats depuis votre espace</li>
                 </ul>
 
                 <form action="/client/carte" method="POST">
-                    <button type="submit" class="btn-submit-carte" id="btn-demande-carte">
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px 24px;" id="btn-demande-carte">
                         Demander ma carte virtuelle
                     </button>
                 </form>
             </div>
         </div>
 
-        <div class="section-header">
-            <h2 class="section-title">Mes demandes (<%= (demandes && demandes.length) || 0 %>)</h2>
+        <!-- Historique des demandes -->
+        <div class="card-title" style="margin-bottom: 16px;">
+            Mes demandes de cartes (<%= (demandes && demandes.length) || 0 %>)
         </div>
 
         <div class="table-card">
             <% if (demandes && demandes.length > 0) { %>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>N° Référence</th>
-                            <th>Type de demande</th>
-                            <th>Date de création</th>
-                            <th>Statut</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% demandes.forEach(function(demande) { %>
+                <div class="table-container">
+                    <table>
+                        <thead>
                             <tr>
-                                <td><strong>#DEM-<%= demande.id %></strong></td>
-                                <td>Carte Virtuelle</td>
-                                <td>
-                                    <%= new Date(demande.created_at).toLocaleDateString('fr-FR', {
-                                        year: 'numeric',
-                                        month: 'short',
-                                        day: 'numeric',
-                                        hour: '2-digit',
-                                        minute: '2-digit'
-                                    }) %>
-                                </td>
-                                <td>
-                                    <% if (demande.statut === 'en_attente') { %>
-                                        <span class="badge badge-en_attente">En attente</span>
-                                    <% } else if (demande.statut === 'validee') { %>
-                                        <span class="badge badge-validee">Validée</span>
-                                    <% } else if (demande.statut === 'refusee') { %>
-                                        <span class="badge badge-refusee">Refusée</span>
-                                    <% } else { %>
-                                        <span class="badge"><%= demande.statut %></span>
-                                    <% } %>
-                                </td>
+                                <th>N° Référence</th>
+                                <th>Type de demande</th>
+                                <th>Date d'émission</th>
+                                <th>Statut</th>
                             </tr>
-                        <% }); %>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <% demandes.forEach(function(demande) { %>
+                                <tr>
+                                    <td><strong>#DEM-<%= demande.id %></strong></td>
+                                    <td>Carte Virtuelle Exclusive</td>
+                                    <td>
+                                        <%= new Date(demande.created_at).toLocaleDateString('fr-FR', {
+                                            year: 'numeric',
+                                            month: 'short',
+                                            day: 'numeric',
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        }) %>
+                                    </td>
+                                    <td>
+                                        <% if (demande.statut === 'en_attente') { %>
+                                            <span class="badge badge-en_attente">En attente</span>
+                                        <% } else if (demande.statut === 'validee') { %>
+                                            <span class="badge badge-validee">Validée</span>
+                                        <% } else if (demande.statut === 'refusee') { %>
+                                            <span class="badge badge-refusee">Refusée</span>
+                                        <% } else { %>
+                                            <span class="badge badge-warning"><%= demande.statut %></span>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
             <% } else { %>
                 <div class="empty-state">
                     Vous n'avez pas encore effectué de demande de carte virtuelle.

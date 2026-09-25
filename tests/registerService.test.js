@@ -29,6 +29,11 @@ const {
     activateUserAccount
 } = await import('../repositories/registerRepository.js');
 
+const {
+    createCompte,
+    getComptesByClientId
+} = await import('../repositories/compteRepository.js');
+
 const { register, verifyEmailToken } = await import('../services/registerService.js');
 
 describe('registerService', () => {
@@ -58,6 +63,13 @@ describe('registerService', () => {
                 'karim.alami@example.com',
                 'hashed_secret_123',
                 expect.any(String)
+            );
+            expect(createCompte).toHaveBeenCalledWith(
+                expect.any(String),
+                42,
+                1000.00,
+                'courant',
+                'inactif'
             );
         });
 

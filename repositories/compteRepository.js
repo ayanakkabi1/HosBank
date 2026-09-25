@@ -62,19 +62,33 @@ export const getRecentOperationsByClientId = async (clientId, limit = 5) => {
     return rows;
 };
 
-
-
-
-
-
-
-
-
-export const createCompte = async (rib, clientId, soldeInitial = 1000.00, typeCompte = 'courant') => {
+/**
+ * Crée un compte bancaire pour un client (statut inactif par défaut jusqu'à activation admin)
+ * @param {string} rib 
+ * @param {number} clientId 
+ * @param {number} soldeInitial 
+ * @param {string} typeCompte 
+ * @param {string} statut 
+ * @returns {Promise<number>} ID du compte créé
+ */
+export const createCompte = async (rib, clientId, soldeInitial = 1000.00, typeCompte = 'courant', statut = 'inactif') => {
     const [result] = await pool.query(
         `INSERT INTO comptes (rib, solde, type_compte, statut, client_id) 
-         VALUES (?, ?, ?, 'actif', ?)`,
-        [rib, soldeInitial, typeCompte, clientId]
+         VALUES (?, ?, ?, ?, ?)`,
+        [rib, soldeInitial, typeCompte, statut, clientId]
     );
     return result.insertId;
+};
+
+/**
+ * Active un compte bancaire
+ * @param {number} compteId 
+ * @returns {Promise<boolean>}
+ */
+export const activateCompteById = async (compteId) => {
+    const [result] = await pool.query(
+        `UPDATE comptes SET statut = 'actif' WHERE id = ?`,
+        [compteId]
+    );
+    return result.affectedRows > 0;
 };
