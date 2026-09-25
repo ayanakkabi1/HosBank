@@ -1,4 +1,4 @@
-import * as beneficiaireService from '../services/beneficiareService.js';
+import * as beneficiaireService from '../services/beneficiaireService.js';
 
 
 export const renderBeneficiaires = async (req, res) => {
@@ -62,4 +62,4 @@ export const processDeleteBeneficiaire = async (req, res) => {
             success: null
         });
     }
-};
+};
