@@ -7,6 +7,11 @@ jest.unstable_mockModule('../repositories/registerRepository.js', () => ({
     activateUserAccount: jest.fn()
 }));
 
+jest.unstable_mockModule('../repositories/compteRepository.js', () => ({
+    createCompte: jest.fn().mockResolvedValue(1),
+    getComptesByClientId: jest.fn().mockResolvedValue([])
+}));
+
 jest.unstable_mockModule('../services/emailService.js', () => ({
     sendVerificationEmail: jest.fn().mockResolvedValue('http://mocklink')
 }));
@@ -23,6 +28,11 @@ const {
     findUserByVerificationToken,
     activateUserAccount
 } = await import('../repositories/registerRepository.js');
+
+const {
+    createCompte,
+    getComptesByClientId
+} = await import('../repositories/compteRepository.js');
 
 const { register, verifyEmailToken } = await import('../services/registerService.js');
 
@@ -53,6 +63,13 @@ describe('registerService', () => {
                 'karim.alami@example.com',
                 'hashed_secret_123',
                 expect.any(String)
+            );
+            expect(createCompte).toHaveBeenCalledWith(
+                expect.any(String),
+                42,
+                1000.00,
+                'courant',
+                'inactif'
             );
         });
 

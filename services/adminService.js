@@ -136,6 +136,7 @@ export const updateUser = async (id, { nom, prenom, email, role, statut }) => {
 
 /**
  * Alterne l'activation d'un utilisateur (actif <-> inactif)
+ * Active également les comptes bancaires inactifs si l'utilisateur est activé
  */
 export const toggleUserStatus = async (id) => {
     if (!id) throw new Error('ID utilisateur manquant.');
@@ -145,6 +146,12 @@ export const toggleUserStatus = async (id) => {
 
     const newStatus = user.statut === 'actif' ? 'inactif' : 'actif';
     await adminRepository.updateUserStatus(id, newStatus);
+
+    // Si l'administrateur active le client, activer également ses comptes bancaires inactifs
+    if (newStatus === 'actif' && adminRepository.activateComptesByClientId) {
+        await adminRepository.activateComptesByClientId(id);
+    }
+
     return newStatus;
 };
 
@@ -223,4 +230,44 @@ export const toggleCarteStatus = async (carteId) => {
     const newStatus = carte.statut === 'active' ? 'bloquee' : 'active';
     await adminRepository.updateCarteStatus(carteId, newStatus);
     return newStatus;
+};
+
+export const getClientAssignmentData = async () => {
+    const [clients, chargeClients] = await Promise.all([
+        adminRepository.findClients(),
+        adminRepository.findChargeClients()
+    ]);
+
+    return { clients, chargeClients };
+};
+
+export const assignClientToCharge = async (clientId, chargeId) => {
+    const numericClientId = Number(clientId);
+    const numericChargeId = Number(chargeId);
+
+    if (!Number.isInteger(numericClientId) || !Number.isInteger(numericChargeId)) {
+        throw new Error('Le client et le chargé client sont obligatoires.');
+    }
+
+    const [client, chargeClient] = await Promise.all([
+        adminRepository.findClientById(numericClientId),
+        adminRepository.findChargeClientById(numericChargeId)
+    ]);
+
+    if (!client) {
+        throw new Error('Client introuvable.');
+    }
+
+    if (!chargeClient) {
+        throw new Error('Chargé client introuvable.');
+    }
+
+    const assigned = await adminRepository.assignClientToCharge(
+        numericClientId,
+        numericChargeId
+    );
+
+    if (!assigned) {
+        throw new Error("L'affectation du client a échoué.");
+    }
 };

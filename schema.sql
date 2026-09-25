@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS comptes (
     rib VARCHAR(24) NOT NULL UNIQUE,
     solde DECIMAL(15, 2) NOT NULL DEFAULT 0.00,
     type_compte VARCHAR(50) NOT NULL DEFAULT 'courant', 
-    statut VARCHAR(50) NOT NULL DEFAULT 'actif',       
+    statut VARCHAR(50) NOT NULL DEFAULT 'inactif',       
     client_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (client_id) REFERENCES users(id) ON DELETE CASCADE

@@ -78,9 +78,9 @@ export const register = async (
         verificationToken
     );
 
-    // Création automatique d'un compte courant avec 1000 MAD de bienvenue
+    // Création automatique d'un compte courant (statut 'inactif' en attente d'activation par l'administrateur)
     const defaultRib = generateRib();
-    await createCompte(defaultRib, userId, 1000.00, 'courant');
+    await createCompte(defaultRib, userId, 1000.00, 'courant', 'inactif');
 
     // Envoi de l'e-mail de confirmation
     await sendVerificationEmail(cleanEmail, verificationToken);
@@ -103,10 +103,10 @@ export const verifyEmailToken = async (token) => {
         throw new Error('Impossible d\'activer le compte. Veuillez réessayer.');
     }
 
-    // Sécurité : s'assure qu'un compte courant existe pour ce client
+    // Sécurité : s'assure qu'un compte courant existe pour ce client (inactif tant que l'admin ne l'a pas activé)
     const comptes = await getComptesByClientId(user.id);
     if (!comptes || comptes.length === 0) {
-        await createCompte(generateRib(), user.id, 1000.00, 'courant');
+        await createCompte(generateRib(), user.id, 1000.00, 'courant', 'inactif');
     }
 
     return user;

@@ -193,8 +193,8 @@
         .badge-role-client { background-color: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
 
         .badge-statut-actif { background-color: var(--success-bg); color: #047857; border: 1px solid #a7f3d0; }
-        .badge-statut-inactif, .badge-statut-bloque { background-color: var(--danger-bg); color: #b91c1c; border: 1px solid #fecaca; }
-        .badge-statut-en_attente { background-color: var(--warning-bg); color: #b45309; border: 1px solid #fde68a; }
+        .badge-statut-bloque { background-color: var(--danger-bg); color: #b91c1c; border: 1px solid #fecaca; }
+        .badge-statut-inactif, .badge-statut-en_attente { background-color: var(--warning-bg); color: #b45309; border: 1px solid #fde68a; }
 
         /* Forms */
         .form-grid {
@@ -547,6 +547,8 @@
                                     <td>
                                         <% if (c.statut === 'actif') { %>
                                             <span class="badge badge-statut-actif">Actif</span>
+                                        <% } else if (c.statut === 'inactif') { %>
+                                            <span class="badge badge-statut-inactif">Inactif</span>
                                         <% } else { %>
                                             <span class="badge badge-statut-bloque"><%= c.statut %></span>
                                         <% } %>
@@ -556,6 +558,10 @@
                                             <% if (c.statut === 'actif') { %>
                                                 <button type="submit" class="btn btn-danger-outline btn-sm" onclick="return confirm('Bloquer ce compte ?')">
                                                     Bloquer
+                                                </button>
+                                            <% } else if (c.statut === 'inactif') { %>
+                                                <button type="submit" class="btn btn-success-outline btn-sm">
+                                                    Activer
                                                 </button>
                                             <% } else { %>
                                                 <button type="submit" class="btn btn-success-outline btn-sm">
