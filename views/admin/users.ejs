@@ -64,7 +64,7 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+    
     <header class="navbar">
         <div class="navbar-left">
             <a href="/admin/users" class="navbar-brand">
@@ -86,7 +86,7 @@
             <p class="page-subtitle">Administration complète des utilisateurs, attribution des rôles, gestion des comptes et émission des cartes.</p>
         </div>
 
-        <!-- Flash messages -->
+        
         <% if (error) { %>
             <div class="alert alert-danger"><%= error %></div>
         <% } %>
@@ -94,7 +94,7 @@
             <div class="alert alert-success"><%= success %></div>
         <% } %>
 
-        <!-- Stats overview -->
+        
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-label">Utilisateurs</div>
@@ -113,7 +113,7 @@
             </div>
         </div>
 
-        <!-- Navigation par onglets -->
+        
         <nav class="tabs">
             <a href="/admin/users?tab=users" class="tab-btn <%= activeTab === 'users' ? 'active' : '' %>">
                 👥 Utilisateurs & Rôles (<%= users.length %>)
@@ -126,11 +126,11 @@
             </a>
         </nav>
 
-        <!-- ============================================== -->
-        <!-- ONGLET 1 : UTILISATEURS & ROLES                -->
-        <!-- ============================================== -->
+        
+        
+        
         <% if (activeTab === 'users') { %>
-            <!-- Formulaire de création d'utilisateur -->
+            
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Créer un nouvel utilisateur</h2>
@@ -178,7 +178,6 @@
                 </form>
             </div>
 
-            <!-- Liste des utilisateurs -->
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Liste des Utilisateurs et Rôles</h2>
@@ -225,12 +224,10 @@
                                     <td><%= new Date(u.created_at).toLocaleDateString('fr-FR') %></td>
                                     <td>
                                         <div class="action-cell">
-                                            <!-- Bouton Modifier (Modal) -->
                                             <button type="button" class="btn btn-outline btn-sm" onclick="openEditModal(<%= JSON.stringify(u) %>)">
                                                 Modifier
                                             </button>
 
-                                            <!-- Toggle Statut Actif/Inactif -->
                                             <form action="/admin/users/<%= u.id %>/toggle-status" method="POST" style="display:inline;">
                                                 <% if (u.statut === 'actif') { %>
                                                     <button type="submit" class="btn btn-danger-outline btn-sm" onclick="return confirm('Désactiver ce compte ?')">
@@ -252,11 +249,7 @@
             </div>
         <% } %>
 
-        <!-- ============================================== -->
-        <!-- ONGLET 2 : COMPTES BANCAIRES                  -->
-        <!-- ============================================== -->
         <% if (activeTab === 'comptes') { %>
-            <!-- Formulaire d'ouverture de compte -->
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Ouvrir un nouveau compte bancaire</h2>
@@ -292,7 +285,7 @@
                 </form>
             </div>
 
-            <!-- Liste des comptes -->
+            
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Comptes Bancaires HosBank</h2>
@@ -352,11 +345,11 @@
             </div>
         <% } %>
 
-        <!-- ============================================== -->
-        <!-- ONGLET 3 : CARTES BANCAIRES                   -->
-        <!-- ============================================== -->
+        
+        
+        
         <% if (activeTab === 'cartes') { %>
-            <!-- Formulaire d'émission de carte -->
+            
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Émettre une nouvelle carte bancaire</h2>
@@ -392,7 +385,7 @@
                 </form>
             </div>
 
-            <!-- Liste des cartes -->
+            
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Cartes Bancaires Émises</h2>
@@ -449,7 +442,6 @@
         <% } %>
     </main>
 
-    <!-- Modal d'édition d'utilisateur -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">

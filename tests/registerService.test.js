@@ -8,7 +8,7 @@ jest.unstable_mockModule('../repositories/registerRepository.js', () => ({
 }));
 
 jest.unstable_mockModule('../repositories/compteRepository.js', () => ({
-    createCompte: jest.fn().mockResolvedValue(1),
+    createCompte: jest.fn(),
     getComptesByClientId: jest.fn().mockResolvedValue([])
 }));
 

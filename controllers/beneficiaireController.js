@@ -1,6 +1,6 @@
-import * as beneficiaireService from '../services/beneficiareService.js';
+import * as beneficiaireService from '../services/beneficiaireService.js';
 
-// Afficher la liste des bénéficiaires
+
 export const renderBeneficiaires = async (req, res) => {
     const clientId = req.session.user.id;
 
@@ -14,7 +14,7 @@ export const renderBeneficiaires = async (req, res) => {
     });
 };
 
-// Ajouter un bénéficiaire
+
 export const processAddBeneficiaire = async (req, res) => {
     const { nom_beneficiaire, rib } = req.body;
     const clientId = req.session.user.id;
@@ -43,7 +43,7 @@ export const processAddBeneficiaire = async (req, res) => {
     }
 };
 
-// Supprimer un bénéficiaire
+
 export const processDeleteBeneficiaire = async (req, res) => {
     const { id } = req.params;
     const clientId = req.session.user.id;
@@ -62,4 +62,4 @@ export const processDeleteBeneficiaire = async (req, res) => {
             success: null
         });
     }
-};
+};

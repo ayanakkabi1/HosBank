@@ -56,7 +56,7 @@
             font-size: 12px;
         }
 
-        /* Welcome Section */
+        
         .welcome-header {
             margin-bottom: 28px;
         }
@@ -73,7 +73,7 @@
             color: var(--text-muted);
         }
 
-        /* Overview Grid */
+        
         .overview-grid {
             display: grid;
             grid-template-columns: 1.25fr 2fr;
@@ -87,7 +87,7 @@
             }
         }
 
-        /* Solde Total Card */
+        
         .card-solde-total {
             background: linear-gradient(145deg, #181818 0%, #111111 100%);
             border: 1px solid var(--gold-border);
@@ -147,7 +147,7 @@
             font-weight: 600;
         }
 
-        /* Quick Actions Card */
+        
         .card-quick-actions {
             background: var(--bg-surface);
             border: 1px solid var(--border-card);
@@ -205,7 +205,7 @@
             box-shadow: 0 0 10px rgba(201, 162, 39, 0.25);
         }
 
-        /* Comptes Grid */
+        
         .comptes-section {
             margin-bottom: 36px;
         }
@@ -283,7 +283,7 @@
             font-family: 'DM Sans', sans-serif;
         }
 
-        /* Operations Section */
+        
         .operations-section {
             background: var(--bg-surface);
             border: 1px solid var(--border-card);
@@ -313,7 +313,7 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+    
     <header class="navbar">
         <a href="/client/dashboard" class="navbar-brand">
             <div class="brand-icon">H</div>
@@ -344,17 +344,15 @@
         </div>
     </header>
 
-    <!-- Main Content -->
+    
     <main class="container">
-        <!-- Welcome header -->
+        
         <div class="welcome-header">
             <h1>Bonjour, <%= user && user.prenom ? user.prenom : '' %> 👋</h1>
             <p>Bienvenue sur votre espace privé HosBank. Retrouvez l'état consolidé de votre patrimoine et opérations.</p>
         </div>
 
-        <!-- Overview grid (Solde + Actions) -->
         <div class="overview-grid">
-            <!-- Solde Total Card -->
             <div class="card-solde-total">
                 <div>
                     <div class="solde-label">Solde Total Consolidé</div>
@@ -366,7 +364,6 @@
                 </div>
             </div>
 
-            <!-- Quick Actions Card -->
             <div class="card-quick-actions">
                 <div class="card-title" style="margin-bottom: 18px;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="2">
@@ -448,7 +445,7 @@
             <% } %>
         </div>
 
-        <!-- Recent Operations Section -->
+        
         <div class="operations-section">
             <div class="card-title" style="margin-bottom: 18px;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="2">

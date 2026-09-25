@@ -29,7 +29,7 @@ describe('compteService - HOS-33 Isolation & Dashboard Data', () => {
 
         const data = await getDashboardData(targetClientId);
 
-        // Vérification de l'isolation stricte : toutes les requêtes ont été filtrées par le clientId 101
+        
         expect(compteRepository.getComptesByClientId).toHaveBeenCalledWith(targetClientId);
         expect(compteRepository.getTotalSoldeByClientId).toHaveBeenCalledWith(targetClientId);
         expect(compteRepository.getRecentOperationsByClientId).toHaveBeenCalledWith(targetClientId, 5);

@@ -1,6 +1,6 @@
 import * as carteService from '../services/carteService.js';
 
-// Afficher la page de demande de carte
+
 export const renderDemandeCarte = async (req, res) => {
     const clientId = req.session.user.id;
     const demandes = await carteService.getMesDemandesCarte(clientId);
@@ -13,7 +13,7 @@ export const renderDemandeCarte = async (req, res) => {
     });
 };
 
-// Traiter la soumission de la demande
+
 export const processDemanderCarte = async (req, res) => {
     const clientId = req.session.user.id;
 

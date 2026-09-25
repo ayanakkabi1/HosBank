@@ -1,8 +1,8 @@
 import pool from '../config/db.js';
 
-/**
- * Récupère l'ensemble des virements avec informations des comptes source et destination
- */
+
+
+
 export const getAllVirements = async (limit = 100, offset = 0) => {
     const [rows] = await pool.query(`
         SELECT v.id, v.montant, v.motif, v.statut, v.created_at,
@@ -19,9 +19,9 @@ export const getAllVirements = async (limit = 100, offset = 0) => {
     return rows;
 };
 
-/**
- * Récupère l'ensemble des demandes clients (cartes, etc.) avec informations de traitement
- */
+
+
+
 export const getAllDemandes = async (limit = 100, offset = 0) => {
     const [rows] = await pool.query(`
         SELECT d.id, d.type_demande, d.statut, d.created_at, d.updated_at,
@@ -36,9 +36,9 @@ export const getAllDemandes = async (limit = 100, offset = 0) => {
     return rows;
 };
 
-/**
- * Récupère l'ensemble des réclamations avec les détails du client et du chargé traitant
- */
+
+
+
 export const getAllReclamations = async (limit = 100, offset = 0) => {
     const [rows] = await pool.query(`
         SELECT r.id, r.sujet, r.description, r.statut, r.reponse, r.created_at, r.updated_at,
@@ -53,9 +53,9 @@ export const getAllReclamations = async (limit = 100, offset = 0) => {
     return rows;
 };
 
-/**
- * Agrégation SQL pour la supervision des activités des chargés de clientèle
- */
+
+
+
 export const getSupervisionCharges = async () => {
     const [rows] = await pool.query(`
         SELECT u.id, u.nom, u.prenom, u.email, u.statut, u.created_at,
@@ -73,9 +73,9 @@ export const getSupervisionCharges = async () => {
     return rows;
 };
 
-/**
- * Agrégations globales de statistiques financières et opérationnelles
- */
+
+
+
 export const getGlobalFinancialStats = async () => {
     const [[depotsRow]] = await pool.query(`
         SELECT COALESCE(SUM(solde), 0) AS total_depots,
@@ -101,9 +101,9 @@ export const getGlobalFinancialStats = async () => {
     };
 };
 
-/**
- * Agrégation des demandes par statut et type
- */
+
+
+
 export const getDemandesAggregation = async () => {
     const [parStatut] = await pool.query(`
         SELECT statut, COUNT(*) AS count
@@ -120,9 +120,9 @@ export const getDemandesAggregation = async () => {
     return { parStatut, parType };
 };
 
-/**
- * Agrégation des réclamations par statut
- */
+
+
+
 export const getReclamationsAggregation = async () => {
     const [parStatut] = await pool.query(`
         SELECT statut, COUNT(*) AS count
@@ -132,9 +132,9 @@ export const getReclamationsAggregation = async () => {
     return parStatut;
 };
 
-/**
- * Agrégation des utilisateurs par rôle et statut
- */
+
+
+
 export const getUsersAggregation = async () => {
     const [rows] = await pool.query(`
         SELECT role, statut, COUNT(*) AS count

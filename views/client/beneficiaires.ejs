@@ -116,7 +116,7 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+    
     <header class="navbar">
         <a href="/client/dashboard" class="navbar-brand">
             <div class="brand-icon">H</div>
@@ -133,13 +133,13 @@
     </header>
 
     <main class="container">
-        <!-- Bouton retour -->
+        
         <a href="/client/dashboard" class="btn-back">← Retour au tableau de bord</a>
 
         <div class="page-title">Mes Bénéficiaires</div>
         <p class="page-subtitle">Gérez vos bénéficiaires pour exécuter vos virements bancaires en toute sérénité.</p>
 
-        <!-- Alertes -->
+        
         <% if (error) { %>
             <div class="alert alert-danger"><%= error %></div>
         <% } %>
@@ -147,7 +147,7 @@
             <div class="alert alert-success"><%= success %></div>
         <% } %>
 
-        <!-- Formulaire d'ajout -->
+        
         <div class="card">
             <div class="card-title">Ajouter un nouveau bénéficiaire</div>
             <form action="/client/beneficiaires" method="POST">

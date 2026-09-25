@@ -58,7 +58,7 @@ export const sendVerificationEmail = async (
         });
     } catch (err) {
         console.error('[Email Service] Erreur lors de l\'envoi de l\'email SMTP :', err.message);
-        // Ne bloque pas l'inscription en mode dev
+        
     }
 
     return verificationLink;

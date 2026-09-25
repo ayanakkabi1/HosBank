@@ -19,4 +19,3 @@ export const login = async (email, password) => {
 
 export const authenticate = login;
 
-// express-session

@@ -1,8 +1,8 @@
 import * as adminStatsService from '../services/adminStatsService.js';
 
-/**
- * Endpoint JSON pour les statistiques globales de la plateforme
- */
+
+
+
 export const getPlatformStats = async (req, res) => {
     try {
         const stats = await adminStatsService.getPlatformGlobalStats();
@@ -12,9 +12,9 @@ export const getPlatformStats = async (req, res) => {
     }
 };
 
-/**
- * Endpoint JSON pour l'historique et la consultation des virements
- */
+
+
+
 export const getVirementsList = async (req, res) => {
     try {
         const limit = Number(req.query.limit) || 100;
@@ -26,9 +26,9 @@ export const getVirementsList = async (req, res) => {
     }
 };
 
-/**
- * Endpoint JSON pour l'historique et la consultation de toutes les demandes
- */
+
+
+
 export const getDemandesList = async (req, res) => {
     try {
         const limit = Number(req.query.limit) || 100;
@@ -40,9 +40,9 @@ export const getDemandesList = async (req, res) => {
     }
 };
 
-/**
- * Endpoint JSON pour la consultation de toutes les réclamations
- */
+
+
+
 export const getReclamationsList = async (req, res) => {
     try {
         const limit = Number(req.query.limit) || 100;
@@ -54,9 +54,9 @@ export const getReclamationsList = async (req, res) => {
     }
 };
 
-/**
- * Endpoint JSON pour la supervision des activités des chargés clients
- */
+
+
+
 export const getSupervisionList = async (req, res) => {
     try {
         const charges = await adminStatsService.getSupervisionCharges();

@@ -1,10 +1,10 @@
 import * as compteService from '../services/compteService.js';
 
-/**
- * Affiche le tableau de bord du client avec ses comptes et soldes
- * @param {import('express').Request} req 
- * @param {import('express').Response} res 
- */
+
+
+
+
+
 export const renderDashboard = async (req, res) => {
     try {
         const client = req.session.user;

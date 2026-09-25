@@ -1,8 +1,8 @@
 import * as adminService from '../services/adminService.js';
 
-/**
- * Affiche la page de gestion des utilisateurs, rôles, comptes et cartes
- */
+
+
+
 export const renderAdminUsers = async (req, res) => {
     try {
         const { users, comptes, cartes, stats } = await adminService.getAdminOverview();
@@ -32,9 +32,9 @@ export const renderAdminUsers = async (req, res) => {
     }
 };
 
-/**
- * Traite la création d'un utilisateur
- */
+
+
+
 export const handleCreateUser = async (req, res) => {
     try {
         const { nom, prenom, email, password, role, statut } = req.body;
@@ -45,9 +45,9 @@ export const handleCreateUser = async (req, res) => {
     }
 };
 
-/**
- * Traite la modification d'un utilisateur (rôle, nom, email, statut)
- */
+
+
+
 export const handleUpdateUser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -59,9 +59,9 @@ export const handleUpdateUser = async (req, res) => {
     }
 };
 
-/**
- * Alterne l'activation/désactivation d'un utilisateur
- */
+
+
+
 export const handleToggleUserStatus = async (req, res) => {
     try {
         const { id } = req.params;
@@ -73,9 +73,9 @@ export const handleToggleUserStatus = async (req, res) => {
     }
 };
 
-/**
- * Traite la création d'un compte bancaire
- */
+
+
+
 export const handleCreateCompte = async (req, res) => {
     try {
         const { clientId, soldeInitial, typeCompte } = req.body;
@@ -86,9 +86,9 @@ export const handleCreateCompte = async (req, res) => {
     }
 };
 
-/**
- * Alterne le statut d'un compte bancaire (actif <-> bloqué)
- */
+
+
+
 export const handleToggleCompteStatus = async (req, res) => {
     try {
         const { id } = req.params;
@@ -100,9 +100,9 @@ export const handleToggleCompteStatus = async (req, res) => {
     }
 };
 
-/**
- * Traite l'émission d'une carte bancaire
- */
+
+
+
 export const handleCreateCarte = async (req, res) => {
     try {
         const { compteId, typeCarte, plafond } = req.body;
@@ -113,9 +113,9 @@ export const handleCreateCarte = async (req, res) => {
     }
 };
 
-/**
- * Alterne le statut d'une carte bancaire (active <-> bloquée)
- */
+
+
+
 export const handleToggleCarteStatus = async (req, res) => {
     try {
         const { id } = req.params;

@@ -15,19 +15,19 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Middlewares de parsing des requêtes
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Configuration du moteur de templates EJS et des fichiers statiques
+
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Configuration des sessions
+
 app.use(session(sessionConfig));
 
-// Montage des routes
+
 app.use('/auth', registerRoute);
 app.use('/auth', loginRoutes);
 app.use('/client', clientRoutes);
@@ -35,7 +35,7 @@ app.use('/client/beneficiaires', beneficiaireRoutes);
 app.use('/client/carte', carteRoutes);
 app.use('/admin', adminRoutes);
 
-// Redirection par défaut
+
 app.get('/', (req, res) => {
   res.redirect('/auth/login');
 });

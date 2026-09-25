@@ -16,9 +16,9 @@ import {
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/**
- * Génère un RIB marocain standard de 24 chiffres
- */
+
+
+
 export const generateRib = () => {
     let randomDigits = '';
     for (let i = 0; i < 21; i++) {
@@ -63,13 +63,13 @@ export const register = async (
         throw new Error('Cette adresse email est déjà utilisée.');
     }
 
-    // Hash du mot de passe
+    
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Création du token de vérification
+    
     const verificationToken = crypto.randomBytes(32).toString('hex');
 
-    // Création de l'utilisateur avec statut 'en_attente' et token
+    
     const userId = await createUser(
         cleanNom,
         cleanPrenom,
@@ -78,11 +78,11 @@ export const register = async (
         verificationToken
     );
 
-    // Création automatique d'un compte courant (statut 'inactif' en attente d'activation par l'administrateur)
+    
     const defaultRib = generateRib();
     await createCompte(defaultRib, userId, 1000.00, 'courant', 'inactif');
 
-    // Envoi de l'e-mail de confirmation
+    
     await sendVerificationEmail(cleanEmail, verificationToken);
 
     return { userId, verificationToken, rib: defaultRib };
@@ -103,7 +103,7 @@ export const verifyEmailToken = async (token) => {
         throw new Error('Impossible d\'activer le compte. Veuillez réessayer.');
     }
 
-    // Sécurité : s'assure qu'un compte courant existe pour ce client (inactif tant que l'admin ne l'a pas activé)
+    
     const comptes = await getComptesByClientId(user.id);
     if (!comptes || comptes.length === 0) {
         await createCompte(generateRib(), user.id, 1000.00, 'courant', 'inactif');

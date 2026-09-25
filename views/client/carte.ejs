@@ -68,7 +68,7 @@
             }
         }
 
-        /* Virtual Card Illustration */
+        
         .virtual-card {
             background: linear-gradient(135deg, #1C1C1C 0%, #0E0E0E 60%, #151515 100%);
             border: 1px solid var(--gold-border);
@@ -223,7 +223,7 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+    
     <header class="navbar">
         <a href="/client/dashboard" class="navbar-brand">
             <div class="brand-icon">H</div>
@@ -245,7 +245,7 @@
         <div class="page-title">Demande de Carte Virtuelle</div>
         <p class="page-subtitle">Commandez votre carte bancaire virtuelle exclusive pour vos règlements en ligne sécurisés.</p>
 
-        <!-- Messages Flash -->
+        
         <% if (error) { %>
             <div class="alert alert-danger"><%= error %></div>
         <% } %>
@@ -253,7 +253,7 @@
             <div class="alert alert-success"><%= success %></div>
         <% } %>
 
-        <!-- Aperçu de la carte et formulaire -->
+        
         <div class="card-preview-section">
             <div class="virtual-card">
                 <div class="card-top">
