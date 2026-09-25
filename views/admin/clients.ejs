@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affectation des clients</title>
+</head>
+<body>
+    <main>
+        <h1>Affecter les clients</h1>
+
+        <% if (success) { %>
+            <p role="status"><%= success %></p>
+        <% } %>
+        <% if (error) { %>
+            <p role="alert"><%= error %></p>
+        <% } %>
+
+        <% if (clients.length === 0) { %>
+            <p>Aucun client à afficher.</p>
+        <% } else { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>E-mail</th>
+                        <th>Chargé actuel</th>
+                        <th>Affectation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% clients.forEach((client) => { %>
+                        <tr>
+                            <td><%= client.nom %> <%= client.prenom %></td>
+                            <td><%= client.email %></td>
+                            <td>
+                                <%= client.charge_nom
+                                    ? `${client.charge_nom} ${client.charge_prenom}`
+                                    : 'Non affecté' %>
+                            </td>
+                            <td>
+                                <form method="post" action="/admin/clients/<%= client.id %>/assign">
+                                    <label for="charge-<%= client.id %>">Chargé client</label>
+                                    <select id="charge-<%= client.id %>" name="chargeId" required>
+                                        <option value="">Choisir</option>
+                                        <% chargeClients.forEach((chargeClient) => { %>
+                                            <option
+                                                value="<%= chargeClient.id %>"
+                                                <%= client.charge_id === chargeClient.id ? 'selected' : '' %>>
+                                                <%= chargeClient.nom %> <%= chargeClient.prenom %>
+                                            </option>
+                                        <% }); %>
+                                    </select>
+                                    <button type="submit">Affecter</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } %>
+    </main>
+</body>
+</html>
