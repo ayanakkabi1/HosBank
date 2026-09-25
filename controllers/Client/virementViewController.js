@@ -1,6 +1,6 @@
 import * as virementService from '../../services/virementService.js';
 import * as compteService from '../../services/compteService.js';
-import * as beneficiaireService from '../../services/beneficiareService.js';
+import * as beneficiaireService from '../../services/beneficiaireService.js';
 import pool from '../../config/db.js';
 
 /**
