@@ -71,6 +71,7 @@ CREATE TABLE IF NOT EXISTS cartes (
     numero_carte VARCHAR(16) NOT NULL UNIQUE,
     type_carte VARCHAR(50) NOT NULL DEFAULT 'virtuelle',
     date_expiration DATE NOT NULL,
+    pin VARCHAR(6) NOT NULL,
     plafond DECIMAL(15, 2) NOT NULL DEFAULT 5000.00,
     statut VARCHAR(50) NOT NULL DEFAULT 'active',
     compte_id INT NOT NULL,

@@ -2,11 +2,11 @@ import { jest } from '@jest/globals';
 
 const query = jest.fn();
 
-jest.unstable_mockModule('../config/db.js', () => ({
+jest.unstable_mockModule('../../config/db.js', () => ({
     default: { query }
 }));
 
-const { findUserByEmail } = await import('../repositories/loginRepository.js');
+const { findUserByEmail } = await import('../../repositories/loginRepository.js');
 
 describe('loginRepository - findUserByEmail', () => {
     beforeEach(() => {

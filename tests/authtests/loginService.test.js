@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 
-jest.unstable_mockModule('../repositories/loginRepository.js', () => ({
+jest.unstable_mockModule('../../repositories/loginRepository.js', () => ({
     findUserByEmail: jest.fn()
 }));
 
@@ -10,9 +10,9 @@ jest.unstable_mockModule('bcrypt', () => ({
     }
 }));
 
-const { findUserByEmail } = await import('../repositories/loginRepository.js');
+const { findUserByEmail } = await import('../../repositories/loginRepository.js');
 const bcrypt = (await import('bcrypt')).default;
-const { login } = await import('../services/loginService.js');
+const { login } = await import('../../services/loginService.js');
 
 describe('loginService - login', () => {
     beforeEach(() => {

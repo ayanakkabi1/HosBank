@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { isAuth, isGuest, hasRole } from '../middlewares/authmiddleware.js';
+import { isAuth, isGuest, hasRole } from '../../middlewares/authmiddleware.js';
 
 const createResponse = () => ({
     redirect: jest.fn(),

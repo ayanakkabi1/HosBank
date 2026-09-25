@@ -3,12 +3,12 @@ import request from 'supertest';
 import express from 'express';
 import session from 'express-session';
 
-jest.unstable_mockModule('../services/loginService.js', () => ({
+jest.unstable_mockModule('../../services/loginService.js', () => ({
     authenticate: jest.fn()
 }));
 
-const loginService = await import('../services/loginService.js');
-const loginRoutes = (await import('../routes/loginRoutes.js')).default;
+const loginService = await import('../../services/loginService.js');
+const loginRoutes = (await import('../../routes/loginRoutes.js')).default;
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
