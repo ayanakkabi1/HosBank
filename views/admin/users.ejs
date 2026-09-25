@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - HosBank Private Banking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/theme.css">
+    <style>
+        .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px 64px; }
+        .page-header { margin-bottom: 28px; }
+        .page-title { font-size: 26px; font-weight: 800; color: var(--text-main); }
+        .page-subtitle { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+        .navbar-left { display: flex; align-items: center; gap: 14px; }
+        .admin-badge {
+            background: var(--gold-muted);
+            color: var(--gold-light);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            border: 1px solid var(--gold-border);
+        }
+        .navbar-right { display: flex; align-items: center; gap: 16px; }
+        .user-greeting { font-size: 13.5px; color: var(--text-secondary); font-weight: 600; }
+        .action-cell { display: flex; align-items: center; gap: 8px; }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.show { display: flex; }
+        .modal-content {
+            background: var(--bg-surface);
+            border: 1px solid var(--gold-border);
+            border-radius: var(--radius-md);
+            max-width: 500px;
+            width: 90%;
+            padding: 28px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.85), var(--gold-glow);
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .modal-title { font-size: 17px; font-weight: 700; color: var(--text-main); }
+        .btn-close {
+            background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted); transition: var(--transition);
+        }
+        .btn-close:hover { color: var(--gold-light); }
+    </style>
+</head>
+<body>
+    
+    <header class="navbar">
+        <div class="navbar-left">
+            <a href="/admin/users" class="navbar-brand">
+                <div class="brand-icon">H</div>
+                <span>Hos<span>Bank</span></span>
+            </a>
+            <span class="admin-badge">Espace Administrateur</span>
+        </div>
+        <div class="navbar-right">
+            <span class="user-greeting"><%= user.prenom %> <%= user.nom %></span>
+            <a href="/admin/clients" class="btn btn-outline btn-sm">Affectations</a>
+            <a href="/auth/logout" class="btn-logout">Déconnexion</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1 class="page-title">Gestion de la Plateforme HosBank</h1>
+            <p class="page-subtitle">Administration complète des utilisateurs, attribution des rôles, gestion des comptes et émission des cartes.</p>
+        </div>
+
+        
+        <% if (error) { %>
+            <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+        <% if (success) { %>
+            <div class="alert alert-success"><%= success %></div>
+        <% } %>
+
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Utilisateurs</div>
+                <div class="stat-value"><%= stats.totalUsers %></div>
+                <div class="stat-desc"><%= stats.activeUsers %> actifs | <%= stats.nbClients %> clients, <%= stats.nbCharges %> chargés</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Comptes Bancaires</div>
+                <div class="stat-value"><%= stats.totalComptes %></div>
+                <div class="stat-desc"><%= stats.activeComptes %> comptes actifs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Cartes Bancaires</div>
+                <div class="stat-value"><%= stats.totalCartes %></div>
+                <div class="stat-desc"><%= stats.activeCartes %> cartes actives</div>
+            </div>
+        </div>
+
+        
+        <nav class="tabs">
+            <a href="/admin/users?tab=users" class="tab-btn <%= activeTab === 'users' ? 'active' : '' %>">
+                👥 Utilisateurs & Rôles (<%= users.length %>)
+            </a>
+            <a href="/admin/users?tab=comptes" class="tab-btn <%= activeTab === 'comptes' ? 'active' : '' %>">
+                💳 Comptes Bancaires (<%= comptes.length %>)
+            </a>
+            <a href="/admin/users?tab=cartes" class="tab-btn <%= activeTab === 'cartes' ? 'active' : '' %>">
+                🔒 Cartes Bancaires (<%= cartes.length %>)
+            </a>
+        </nav>
+
+        
+        
+        
+        <% if (activeTab === 'users') { %>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Créer un nouvel utilisateur</h2>
+                </div>
+                <form action="/admin/users" method="POST">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="nom">Nom</label>
+                            <input type="text" id="nom" name="nom" class="form-control" placeholder="ex: Alami" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="prenom">Prénom</label>
+                            <input type="text" id="prenom" name="prenom" class="form-control" placeholder="ex: Mehdi" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="email@exemple.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Mot de passe</label>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Min. 6 caractères" required minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Rôle</label>
+                            <select id="role" name="role" class="form-control" required>
+                                <option value="client">Client</option>
+                                <option value="charge_clientele">Chargé Clientèle</option>
+                                <option value="admin">Administrateur</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="statut">Statut</label>
+                            <select id="statut" name="statut" class="form-control" required>
+                                <option value="actif">Actif</option>
+                                <option value="en_attente">En attente</option>
+                                <option value="inactif">Inactif</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                + Créer l'utilisateur
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Liste des Utilisateurs et Rôles</h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Utilisateur</th>
+                                <th>Email</th>
+                                <th>Rôle</th>
+                                <th>Statut</th>
+                                <th>Comptes</th>
+                                <th>Créé le</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% users.forEach(function(u) { %>
+                                <tr>
+                                    <td><strong>#<%= u.id %></strong></td>
+                                    <td><strong><%= u.prenom %> <%= u.nom %></strong></td>
+                                    <td><%= u.email %></td>
+                                    <td>
+                                        <% if (u.role === 'admin') { %>
+                                            <span class="badge badge-role-admin">Administrateur</span>
+                                        <% } else if (u.role === 'charge_clientele') { %>
+                                            <span class="badge badge-role-charge">Chargé Client</span>
+                                        <% } else { %>
+                                            <span class="badge badge-role-client">Client</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <% if (u.statut === 'actif') { %>
+                                            <span class="badge badge-statut-actif">Actif</span>
+                                        <% } else if (u.statut === 'en_attente') { %>
+                                            <span class="badge badge-statut-en_attente">En attente</span>
+                                        <% } else { %>
+                                            <span class="badge badge-statut-inactif"><%= u.statut %></span>
+                                        <% } %>
+                                    </td>
+                                    <td><%= u.nb_comptes %> compte(s)</td>
+                                    <td><%= new Date(u.created_at).toLocaleDateString('fr-FR') %></td>
+                                    <td>
+                                        <div class="action-cell">
+                                            <button type="button" class="btn btn-outline btn-sm" onclick="openEditModal(<%= JSON.stringify(u) %>)">
+                                                Modifier
+                                            </button>
+
+                                            <form action="/admin/users/<%= u.id %>/toggle-status" method="POST" style="display:inline;">
+                                                <% if (u.statut === 'actif') { %>
+                                                    <button type="submit" class="btn btn-danger-outline btn-sm" onclick="return confirm('Désactiver ce compte ?')">
+                                                        Désactiver
+                                                    </button>
+                                                <% } else { %>
+                                                    <button type="submit" class="btn btn-success-outline btn-sm">
+                                                        Activer
+                                                    </button>
+                                                <% } %>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <% } %>
+
+        <% if (activeTab === 'comptes') { %>
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Ouvrir un nouveau compte bancaire</h2>
+                </div>
+                <form action="/admin/comptes" method="POST">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="clientId">Titulaire du compte (Client)</label>
+                            <select id="clientId" name="clientId" class="form-control" required>
+                                <option value="">-- Sélectionner un utilisateur --</option>
+                                <% users.forEach(function(u) { %>
+                                    <option value="<%= u.id %>"><%= u.prenom %> <%= u.nom %> (<%= u.email %>)</option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="typeCompte">Type de compte</label>
+                            <select id="typeCompte" name="typeCompte" class="form-control" required>
+                                <option value="courant">Compte Courant</option>
+                                <option value="epargne">Compte Épargne</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="soldeInitial">Solde initial (MAD)</label>
+                            <input type="number" id="soldeInitial" name="soldeInitial" class="form-control" step="0.01" value="1000.00" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                + Créer le compte
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Comptes Bancaires HosBank</h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>N° Compte</th>
+                                <th>RIB</th>
+                                <th>Titulaire</th>
+                                <th>Type</th>
+                                <th>Solde</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% comptes.forEach(function(c) { %>
+                                <tr>
+                                    <td><strong>#<%= c.id %></strong></td>
+                                    <td><code><%= c.rib %></code></td>
+                                    <td><%= c.client_prenom %> <%= c.client_nom %></td>
+                                    <td><span style="text-transform: capitalize;"><%= c.type_compte %></span></td>
+                                    <td><strong><%= Number(c.solde).toLocaleString('fr-FR', { minimumFractionDigits: 2 }) %> MAD</strong></td>
+                                    <td>
+                                        <% if (c.statut === 'actif') { %>
+                                            <span class="badge badge-statut-actif">Actif</span>
+                                        <% } else if (c.statut === 'inactif') { %>
+                                            <span class="badge badge-statut-inactif">Inactif</span>
+                                        <% } else { %>
+                                            <span class="badge badge-statut-bloque"><%= c.statut %></span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <form action="/admin/comptes/<%= c.id %>/toggle-status" method="POST" style="display:inline;">
+                                            <% if (c.statut === 'actif') { %>
+                                                <button type="submit" class="btn btn-danger-outline btn-sm" onclick="return confirm('Bloquer ce compte ?')">
+                                                    Bloquer
+                                                </button>
+                                            <% } else if (c.statut === 'inactif') { %>
+                                                <button type="submit" class="btn btn-success-outline btn-sm">
+                                                    Activer
+                                                </button>
+                                            <% } else { %>
+                                                <button type="submit" class="btn btn-success-outline btn-sm">
+                                                    Réactiver
+                                                </button>
+                                            <% } %>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <% } %>
+
+        
+        
+        
+        <% if (activeTab === 'cartes') { %>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Émettre une nouvelle carte bancaire</h2>
+                </div>
+                <form action="/admin/cartes" method="POST">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="compteId">Compte rattaché</label>
+                            <select id="compteId" name="compteId" class="form-control" required>
+                                <option value="">-- Sélectionner un compte --</option>
+                                <% comptes.forEach(function(c) { %>
+                                    <option value="<%= c.id %>"><%= c.client_prenom %> <%= c.client_nom %> - RIB: <%= c.rib %> (<%= c.type_compte %>)</option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="typeCarte">Type de carte</label>
+                            <select id="typeCarte" name="typeCarte" class="form-control" required>
+                                <option value="virtuelle">Carte Virtuelle</option>
+                                <option value="physique">Carte Physique</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="plafond">Plafond mensuel (MAD)</label>
+                            <input type="number" id="plafond" name="plafond" class="form-control" step="100" value="5000" min="500" required>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                + Émettre la carte
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Cartes Bancaires Émises</h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Numéro de carte</th>
+                                <th>Titulaire</th>
+                                <th>Type</th>
+                                <th>Date d'expiration</th>
+                                <th>Plafond</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% cartes.forEach(function(k) { %>
+                                <tr>
+                                    <td><strong>#<%= k.id %></strong></td>
+                                    <td><code>•••• •••• •••• <%= k.numero_carte.slice(-4) %></code></td>
+                                    <td><%= k.client_prenom %> <%= k.client_nom %></td>
+                                    <td><span style="text-transform: capitalize;"><%= k.type_carte %></span></td>
+                                    <td><%= new Date(k.date_expiration).toLocaleDateString('fr-FR', { month: '2-digit', year: 'numeric' }) %></td>
+                                    <td><%= Number(k.plafond).toLocaleString('fr-FR') %> MAD</td>
+                                    <td>
+                                        <% if (k.statut === 'active') { %>
+                                            <span class="badge badge-statut-actif">Active</span>
+                                        <% } else { %>
+                                            <span class="badge badge-statut-bloque"><%= k.statut %></span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <form action="/admin/cartes/<%= k.id %>/toggle-status" method="POST" style="display:inline;">
+                                            <% if (k.statut === 'active') { %>
+                                                <button type="submit" class="btn btn-danger-outline btn-sm" onclick="return confirm('Bloquer cette carte ?')">
+                                                    Bloquer
+                                                </button>
+                                            <% } else { %>
+                                                <button type="submit" class="btn btn-success-outline btn-sm">
+                                                    Débloquer
+                                                </button>
+                                            <% } %>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <% } %>
+    </main>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Modifier l'utilisateur</h3>
+                <button type="button" class="btn-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form id="editForm" method="POST">
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                    <div class="form-group">
+                        <label for="edit_nom">Nom</label>
+                        <input type="text" id="edit_nom" name="nom" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_prenom">Prénom</label>
+                        <input type="text" id="edit_prenom" name="prenom" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_email">Email</label>
+                        <input type="email" id="edit_email" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_role">Rôle</label>
+                        <select id="edit_role" name="role" class="form-control" required>
+                            <option value="client">Client</option>
+                            <option value="charge_clientele">Chargé Clientèle</option>
+                            <option value="admin">Administrateur</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_statut">Statut</label>
+                        <select id="edit_statut" name="statut" class="form-control" required>
+                            <option value="actif">Actif</option>
+                            <option value="en_attente">En attente</option>
+                            <option value="inactif">Inactif</option>
+                            <option value="bloque">Bloqué</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+                        <button type="button" class="btn btn-outline" onclick="closeEditModal()">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openEditModal(user) {
+            document.getElementById('editForm').action = '/admin/users/' + user.id + '/update';
+            document.getElementById('edit_nom').value = user.nom;
+            document.getElementById('edit_prenom').value = user.prenom;
+            document.getElementById('edit_email').value = user.email;
+            document.getElementById('edit_role').value = user.role;
+            document.getElementById('edit_statut').value = user.statut;
+            document.getElementById('editModal').classList.add('show');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('show');
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
+        };
+    </script>
+</body>
+</html>

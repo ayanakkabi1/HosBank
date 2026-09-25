@@ -1,0 +1,113 @@
+import bcrypt from 'bcrypt';
+import crypto from 'crypto';
+import { sendVerificationEmail } from './emailService.js';
+
+import {
+    findUserByEmail,
+    createUser,
+    findUserByVerificationToken,
+    activateUserAccount
+} from '../repositories/registerRepository.js';
+
+import {
+    createCompte,
+    getComptesByClientId
+} from '../repositories/compteRepository.js';
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+
+
+export const generateRib = () => {
+    let randomDigits = '';
+    for (let i = 0; i < 21; i++) {
+        randomDigits += Math.floor(Math.random() * 10);
+    }
+    return `230${randomDigits}`;
+};
+
+export const register = async (
+    nom,
+    prenom,
+    email,
+    password,
+    passwordConfirmation
+) => {
+    const cleanNom = nom?.trim();
+    const cleanPrenom = prenom?.trim();
+    const cleanEmail = email?.trim().toLowerCase();
+
+    if (!cleanNom || !cleanPrenom || !cleanEmail || !password || !passwordConfirmation) {
+        throw new Error('Tous les champs sont obligatoires.');
+    }
+
+    if (!EMAIL_REGEX.test(cleanEmail)) {
+        throw new Error('Veuillez fournir une adresse email valide.');
+    }
+
+    if (password.length < 8) {
+        throw new Error('Le mot de passe doit contenir au moins 8 caractères.');
+    }
+
+    if (!/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
+        throw new Error('Le mot de passe doit contenir au moins une lettre et un chiffre.');
+    }
+
+    if (password !== passwordConfirmation) {
+        throw new Error('Les mots de passe ne correspondent pas.');
+    }
+
+    const existingUser = await findUserByEmail(cleanEmail);
+    if (existingUser) {
+        throw new Error('Cette adresse email est déjà utilisée.');
+    }
+
+    
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+
+    
+    const userId = await createUser(
+        cleanNom,
+        cleanPrenom,
+        cleanEmail,
+        hashedPassword,
+        verificationToken
+    );
+
+    
+    const defaultRib = generateRib();
+    await createCompte(defaultRib, userId, 1000.00, 'courant', 'inactif');
+
+    
+    await sendVerificationEmail(cleanEmail, verificationToken);
+
+    return { userId, verificationToken, rib: defaultRib };
+};
+
+export const verifyEmailToken = async (token) => {
+    if (!token || typeof token !== 'string') {
+        throw new Error('Jeton de vérification invalide ou manquant.');
+    }
+
+    const user = await findUserByVerificationToken(token);
+    if (!user) {
+        throw new Error('Jeton de vérification invalide ou déjà utilisé.');
+    }
+
+    const activated = await activateUserAccount(token);
+    if (!activated) {
+        throw new Error('Impossible d\'activer le compte. Veuillez réessayer.');
+    }
+
+    
+    const comptes = await getComptesByClientId(user.id);
+    if (!comptes || comptes.length === 0) {
+        await createCompte(generateRib(), user.id, 1000.00, 'courant', 'inactif');
+    }
+
+    return user;
+};

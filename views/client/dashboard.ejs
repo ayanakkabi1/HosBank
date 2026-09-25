@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord Client - HosBank</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/theme.css">
+    <style>
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px 64px;
+            width: 100%;
+        }
+
+        .navbar-user {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--bg-surface-elevated);
+            border: 1px solid var(--border-card);
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 100%);
+            color: #0B0B0B;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 12px;
+        }
+
+        
+        .welcome-header {
+            margin-bottom: 28px;
+        }
+
+        .welcome-header h1 {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .welcome-header p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1.25fr 2fr;
+            gap: 22px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        
+        .card-solde-total {
+            background: linear-gradient(145deg, #181818 0%, #111111 100%);
+            border: 1px solid var(--gold-border);
+            border-radius: var(--radius-md);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: var(--shadow-card), var(--gold-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-solde-total::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, rgba(201, 162, 39, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .solde-label {
+            font-size: 11.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .solde-amount {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--gold-light);
+            margin-bottom: 22px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .solde-stats {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 12.5px;
+            color: var(--text-secondary);
+        }
+
+        .stat-badge {
+            background: var(--gold-muted);
+            border: 1px solid var(--gold-border);
+            color: var(--gold-light);
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+        }
+
+        
+        .card-quick-actions {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
+            padding: 26px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 14px;
+        }
+
+        .action-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 12px;
+            background-color: var(--bg-surface-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            transition: var(--transition);
+            gap: 10px;
+        }
+
+        .action-button:hover {
+            background-color: var(--gold-muted);
+            border-color: var(--gold-border);
+            color: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        .action-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background-color: #121212;
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-light);
+            transition: var(--transition);
+        }
+
+        .action-button:hover .action-icon {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 10px rgba(201, 162, 39, 0.25);
+        }
+
+        
+        .comptes-section {
+            margin-bottom: 36px;
+        }
+
+        .comptes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .compte-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-card);
+        }
+
+        .compte-card:hover {
+            border-color: var(--gold-border);
+            transform: translateY(-2px);
+        }
+
+        .compte-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .compte-type {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .compte-rib {
+            background-color: #111111;
+            border: 1px solid var(--border-subtle);
+            padding: 9px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-family: 'DM Sans', monospace;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .copy-rib-btn {
+            background: none;
+            border: none;
+            color: var(--gold-light);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: var(--transition);
+        }
+
+        .copy-rib-btn:hover {
+            color: var(--text-main);
+            text-decoration: underline;
+        }
+
+        .compte-solde {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--gold-light);
+            margin-top: 4px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        
+        .operations-section {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
+            padding: 26px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .amount-debit {
+            color: var(--danger);
+            font-weight: 700;
+            font-family: 'DM Sans', monospace;
+        }
+
+        .amount-credit {
+            color: var(--success);
+            font-weight: 700;
+            font-family: 'DM Sans', monospace;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 36px 16px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="navbar">
+        <a href="/client/dashboard" class="navbar-brand">
+            <div class="brand-icon">H</div>
+            <span>Hos<span>Bank</span></span>
+        </a>
+
+        <nav class="navbar-nav">
+            <a href="/client/dashboard" class="nav-link active">Tableau de bord</a>
+            <a href="/client/beneficiaires" class="nav-link">Bénéficiaires</a>
+            <a href="/client/carte" class="nav-link">Carte Virtuelle</a>
+        </nav>
+
+        <div class="navbar-user">
+            <div class="user-pill">
+                <div class="avatar">
+                    <%= user && user.prenom ? user.prenom.charAt(0).toUpperCase() : 'C' %><%= user && user.nom ? user.nom.charAt(0).toUpperCase() : '' %>
+                </div>
+                <span><%= user && user.prenom ? user.prenom : 'Client' %> <%= user && user.nom ? user.nom : '' %></span>
+            </div>
+            <a href="/auth/logout" class="btn-logout" title="Déconnexion">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                </svg>
+                <span>Déconnexion</span>
+            </a>
+        </div>
+    </header>
+
+    
+    <main class="container">
+        
+        <div class="welcome-header">
+            <h1>Bonjour, <%= user && user.prenom ? user.prenom : '' %> 👋</h1>
+            <p>Bienvenue sur votre espace privé HosBank. Retrouvez l'état consolidé de votre patrimoine et opérations.</p>
+        </div>
+
+        <div class="overview-grid">
+            <div class="card-solde-total">
+                <div>
+                    <div class="solde-label">Solde Total Consolidé</div>
+                    <div class="solde-amount"><%= totalSoldeFormatted %></div>
+                </div>
+                <div class="solde-stats">
+                    <span class="stat-badge"><%= nombreComptes %> <%= nombreComptes > 1 ? 'comptes actifs' : 'compte actif' %></span>
+                    <span>Actualisé en temps réel</span>
+                </div>
+            </div>
+
+            <div class="card-quick-actions">
+                <div class="card-title" style="margin-bottom: 18px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="2">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    <span>Actions rapides</span>
+                </div>
+                <div class="actions-grid">
+                    <a href="/client/beneficiaires" class="action-button">
+                        <div class="action-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <span>Bénéficiaires</span>
+                    </a>
+                    <a href="/client/carte" class="action-button">
+                        <div class="action-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                <line x1="1" y1="10" x2="23" y2="10"></line>
+                            </svg>
+                        </div>
+                        <span>Carte Virtuelle</span>
+                    </a>
+                    <a href="/client/beneficiaires" class="action-button">
+                        <div class="action-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="7" y1="17" x2="17" y2="7"></line>
+                                <polyline points="7 7 17 7 17 17"></polyline>
+                            </svg>
+                        </div>
+                        <span>Virement</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comptes Section -->
+        <div class="comptes-section">
+            <div class="card-title" style="margin-bottom: 18px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="2">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+                <span>Mes Comptes Bancaires</span>
+            </div>
+
+            <% if (comptes && comptes.length > 0) { %>
+                <div class="comptes-grid">
+                    <% comptes.forEach(function(compte) { %>
+                        <div class="compte-card">
+                            <div class="compte-header">
+                                <span class="compte-type"><%= compte.labelType %></span>
+                                <% if (compte.statut === 'actif') { %>
+                                    <span class="badge badge-statut-actif">Actif</span>
+                                <% } else { %>
+                                    <span class="badge badge-statut-inactif"><%= compte.statut %></span>
+                                <% } %>
+                            </div>
+                            <div class="compte-rib">
+                                <span><%= compte.ribFormatted %></span>
+                                <button type="button" class="copy-rib-btn" onclick="navigator.clipboard.writeText('<%= compte.rib %>'); alert('RIB copié dans le presse-papier !');">
+                                    Copier
+                                </button>
+                            </div>
+                            <div class="solde-label">Solde disponible</div>
+                            <div class="compte-solde"><%= compte.soldeFormatted %></div>
+                        </div>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <div class="compte-card empty-state">
+                    <p>Aucun compte bancaire actif associé pour l'instant.</p>
+                </div>
+            <% } %>
+        </div>
+
+        
+        <div class="operations-section">
+            <div class="card-title" style="margin-bottom: 18px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="2">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+                <span>Dernières Opérations</span>
+            </div>
+
+            <% if (recentOperations && recentOperations.length > 0) { %>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Motif</th>
+                                <th>Statut</th>
+                                <th style="text-align: right;">Montant</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% recentOperations.forEach(function(op) { %>
+                                <tr>
+                                    <td><%= op.dateFormatted %></td>
+                                    <td><strong><%= op.motif || 'Virement bancaire' %></strong></td>
+                                    <td>
+                                        <span class="badge badge-success"><%= op.statut %></span>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <span class="<%= op.isDebit ? 'amount-debit' : 'amount-credit' %>">
+                                            <%= op.isDebit ? '-' : '+' %> <%= op.montantFormatted %>
+                                        </span>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } else { %>
+                <div class="empty-state">
+                    <p>Aucune transaction récente enregistrée sur vos comptes.</p>
+                </div>
+            <% } %>
+        </div>
+    </main>
+</body>
+</html>
