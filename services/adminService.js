@@ -5,31 +5,6 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ALLOWED_ROLES = ['client', 'charge_clientele', 'admin'];
 const ALLOWED_USER_STATUSES = ['actif', 'inactif', 'en_attente', 'bloque'];
 
-export const getClientAssignmentData = async () => {
-    const [clients, chargeClients] = await Promise.all([
-        adminRepository.findClients(),
-        adminRepository.findChargeClients()
-    ]);
-
-    return { clients, chargeClients };
-};
-
-export const assignClientToCharge = async (clientId, chargeId) => {
-    const normalizedClientId = Number(clientId);
-    const normalizedChargeId = Number(chargeId);
-
-    if (!Number.isInteger(normalizedClientId) || !Number.isInteger(normalizedChargeId)) {
-        throw new Error('Identifiants client et chargé client invalides.');
-    }
-
-    const client = await adminRepository.findClientById(normalizedClientId);
-    if (!client) throw new Error('Client introuvable.');
-
-    const chargeClient = await adminRepository.findChargeClientById(normalizedChargeId);
-    if (!chargeClient) throw new Error('Chargé client introuvable.');
-
-    await adminRepository.assignClientToCharge(normalizedClientId, normalizedChargeId);
-};
 
 
 
