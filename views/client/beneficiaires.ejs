@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Bénéficiaires - HosBank Private Banking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/theme.css">
+    <style>
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 24px 64px;
+        }
+
+        .page-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 14px;
+            align-items: end;
+        }
+
+        @media (max-width: 640px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .beneficiaire-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .beneficiaire-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition);
+            box-shadow: var(--shadow-card);
+        }
+
+        .beneficiaire-item:hover {
+            border-color: var(--gold-border);
+            transform: translateY(-1px);
+        }
+
+        .beneficiaire-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .beneficiaire-nom {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .beneficiaire-rib {
+            font-size: 12.5px;
+            font-family: 'DM Sans', monospace;
+            color: var(--gold-light);
+            letter-spacing: 0.5px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            font-size: 14px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13.5px;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            color: var(--gold-light);
+        }
+    </style>
+</head>
+<body>
+    
+    <header class="navbar">
+        <a href="/client/dashboard" class="navbar-brand">
+            <div class="brand-icon">H</div>
+            <span>Hos<span>Bank</span></span>
+        </a>
+
+        <nav class="navbar-nav">
+            <a href="/client/dashboard" class="nav-link">Tableau de bord</a>
+            <a href="/client/beneficiaires" class="nav-link active">Bénéficiaires</a>
+            <a href="/client/carte" class="nav-link">Carte Virtuelle</a>
+        </nav>
+
+        <a href="/auth/logout" class="btn-logout">Déconnexion</a>
+    </header>
+
+    <main class="container">
+        
+        <a href="/client/dashboard" class="btn-back">← Retour au tableau de bord</a>
+
+        <div class="page-title">Mes Bénéficiaires</div>
+        <p class="page-subtitle">Gérez vos bénéficiaires pour exécuter vos virements bancaires en toute sérénité.</p>
+
+        
+        <% if (error) { %>
+            <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+        <% if (success) { %>
+            <div class="alert alert-success"><%= success %></div>
+        <% } %>
+
+        
+        <div class="card">
+            <div class="card-title">Ajouter un nouveau bénéficiaire</div>
+            <form action="/client/beneficiaires" method="POST">
+                <div class="form-row">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="nom_beneficiaire">Nom complet du titulaire</label>
+                        <input
+                            type="text"
+                            id="nom_beneficiaire"
+                            name="nom_beneficiaire"
+                            class="form-control"
+                            placeholder="ex: Mohamed Alami"
+                            required
+                        >
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="rib">RIB marocain (24 chiffres)</label>
+                        <input
+                            type="text"
+                            id="rib"
+                            name="rib"
+                            class="form-control"
+                            placeholder="ex: 230000123456789012345678"
+                            maxlength="24"
+                            required
+                        >
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="height: 42px;">+ Ajouter</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Liste des bénéficiaires -->
+        <div class="card-title" style="margin-bottom: 16px;">Liste de vos bénéficiaires (<%= beneficiaires.length %>)</div>
+
+        <% if (beneficiaires && beneficiaires.length > 0) { %>
+            <div class="beneficiaire-list">
+                <% beneficiaires.forEach(function(b) { %>
+                    <div class="beneficiaire-item">
+                        <div class="beneficiaire-info">
+                            <span class="beneficiaire-nom"><%= b.nom_beneficiaire %></span>
+                            <span class="beneficiaire-rib">RIB : <%= b.rib %></span>
+                        </div>
+                        <form action="/client/beneficiaires/<%= b.id %>/delete" method="POST" style="margin: 0;">
+                            <button type="submit" class="btn btn-danger-outline btn-sm"
+                                onclick="return confirm('Voulez-vous supprimer ce bénéficiaire ?')">
+                                Supprimer
+                            </button>
+                        </form>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="empty-state">
+                Aucun bénéficiaire enregistré pour le moment.
+            </div>
+        <% } %>
+    </main>
+</body>
+</html>

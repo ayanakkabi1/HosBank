@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Comptes - HosBank Private Banking</title>
+    <meta name="description" content="Consultez et gérez vos comptes bancaires HosBank.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/theme.css">
+    <style>
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 32px 24px 64px;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13.5px;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+        .btn-back:hover { color: var(--gold-light); }
+
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .page-title { font-size: 26px; font-weight: 800; margin-bottom: 4px; }
+        .page-subtitle { font-size: 14px; color: var(--text-muted); }
+
+        /* Grille des comptes */
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 20px;
+            margin-bottom: 36px;
+        }
+
+        @media (max-width: 600px) {
+            .accounts-grid { grid-template-columns: 1fr; }
+        }
+
+        .account-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .account-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), var(--gold-light), transparent);
+        }
+
+        .account-card:hover {
+            border-color: var(--gold-border);
+            transform: translateY(-2px);
+        }
+
+        .account-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .account-type {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .account-type-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            background: var(--gold-muted);
+            border: 1px solid var(--gold-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-light);
+        }
+
+        .account-type-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .account-type-sub {
+            font-size: 11.5px;
+            color: var(--text-muted);
+        }
+
+        .rib-display {
+            background: #111111;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            font-family: 'DM Sans', monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            color: var(--gold-light);
+            cursor: pointer;
+            font-size: 11.5px;
+            font-weight: 600;
+            font-family: var(--font-sans);
+            transition: var(--transition);
+            padding: 2px 6px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        .copy-btn:hover {
+            background: var(--gold-muted);
+            color: var(--text-main);
+        }
+
+        .account-solde-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .account-solde {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--gold-light);
+            font-family: 'DM Sans', sans-serif;
+            letter-spacing: -0.5px;
+        }
+
+        /* Section demande compte épargne */
+        .epargne-section {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
+            padding: 28px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            flex-wrap: wrap;
+        }
+
+        .epargne-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: var(--gold-muted);
+            border: 1px solid var(--gold-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-light);
+            flex-shrink: 0;
+        }
+
+        .epargne-info {
+            flex: 1;
+        }
+
+        .epargne-info h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .epargne-info p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
+        }
+
+        .empty-state svg { color: var(--text-dim); margin-bottom: 12px; }
+        .empty-state p { font-size: 14px; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="/client/dashboard" class="navbar-brand">
+            <div class="brand-icon">H</div>
+            <span>Hos<span>Bank</span></span>
+        </a>
+
+        <nav class="navbar-nav">
+            <a href="/client/dashboard" class="nav-link">Tableau de bord</a>
+            <a href="/client/accounts" class="nav-link active">Mes Comptes</a>
+            <a href="/client/beneficiaires" class="nav-link">Bénéficiaires</a>
+            <a href="/client/virement" class="nav-link">Virement</a>
+            <a href="/client/carte" class="nav-link">Carte Virtuelle</a>
+        </nav>
+
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="/client/profile" class="btn btn-outline btn-sm">Mon profil</a>
+            <a href="/auth/logout" class="btn-logout">Déconnexion</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="/client/dashboard" class="btn-back">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Retour au tableau de bord
+        </a>
+
+        <div class="page-header">
+            <div>
+                <div class="page-title">Mes Comptes Bancaires</div>
+                <p class="page-subtitle">Consultez vos comptes et effectuez vos demandes d'ouverture.</p>
+            </div>
+            <a href="/client/virement" class="btn btn-primary">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                Faire un virement
+            </a>
+        </div>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger" role="alert">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <span><%= error %></span>
+            </div>
+        <% } %>
+
+        <% if (typeof success !== 'undefined' && success) { %>
+            <div class="alert alert-success" role="status">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span><%= success %></span>
+            </div>
+        <% } %>
+
+        <!-- Grille des comptes -->
+        <% if (accounts && accounts.length > 0) { %>
+            <div class="accounts-grid">
+                <% accounts.forEach(function(compte) { %>
+                    <div class="account-card">
+                        <div class="account-card-header">
+                            <div class="account-type">
+                                <div class="account-type-icon">
+                                    <% if (compte.type_compte === 'epargne') { %>
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                                    <% } else { %>
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                                    <% } %>
+                                </div>
+                                <div>
+                                    <div class="account-type-name">
+                                        <%= compte.type_compte === 'courant' ? 'Compte Courant' :
+                                            compte.type_compte === 'epargne' ? 'Compte Épargne' :
+                                            compte.type_compte %>
+                                    </div>
+                                    <div class="account-type-sub">Compte personnel</div>
+                                </div>
+                            </div>
+                            <% if (compte.statut === 'actif') { %>
+                                <span class="badge badge-statut-actif">Actif</span>
+                            <% } else if (compte.statut === 'inactif') { %>
+                                <span class="badge badge-statut-inactif">Inactif</span>
+                            <% } else { %>
+                                <span class="badge badge-statut-bloque"><%= compte.statut %></span>
+                            <% } %>
+                        </div>
+
+                        <div class="rib-display">
+                            <span id="rib-<%= compte.id %>"><%= compte.rib %></span>
+                            <button class="copy-btn" onclick="copyRib('<%= compte.rib %>', this)" title="Copier le RIB">
+                                Copier
+                            </button>
+                        </div>
+
+                        <div class="account-solde-label">Solde disponible</div>
+                        <div class="account-solde">
+                            <%= Number(compte.solde).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %> MAD
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="empty-state" style="margin-bottom:28px;">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                <p>Aucun compte bancaire actif pour le moment.</p>
+            </div>
+        <% } %>
+
+        <!-- Demande d'ouverture de compte épargne -->
+        <div class="epargne-section">
+            <div class="epargne-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 6v4l3 3"></path><circle cx="12" cy="12" r="1"></circle></svg>
+            </div>
+            <div class="epargne-info">
+                <h3>Ouvrir un Compte Épargne</h3>
+                <p>Faites fructifier votre patrimoine avec un compte épargne à rendement optimisé. Soumettez une demande, votre conseiller la traitera sous 24h.</p>
+            </div>
+            <form action="/client/accounts/savings-request" method="POST">
+                <button type="submit" class="btn btn-primary" id="btn-demande-epargne">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Demander un compte épargne
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        function copyRib(rib, btn) {
+            navigator.clipboard.writeText(rib).then(() => {
+                const original = btn.textContent;
+                btn.textContent = '✓ Copié';
+                btn.style.color = 'var(--success)';
+                setTimeout(() => {
+                    btn.textContent = original;
+                    btn.style.color = '';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
