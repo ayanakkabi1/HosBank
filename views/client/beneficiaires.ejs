@@ -3,210 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Bénéficiaires - HosBank</title>
+    <title>Mes Bénéficiaires - HosBank Private Banking</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/theme.css">
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --navy-dark: #0f172a;
-            --slate-800: #1e293b;
-            --slate-600: #475569;
-            --slate-400: #94a3b8;
-            --slate-200: #e2e8f0;
-            --slate-100: #f1f5f9;
-            --slate-50: #f8fafc;
-            --success: #10b981;
-            --success-bg: #ecfdf5;
-            --danger: #ef4444;
-            --danger-bg: #fef2f2;
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-
-        body { background-color: var(--slate-50); color: var(--navy-dark); min-height: 100vh; }
-
-        /* Navbar */
-        .navbar {
-            background: #fff;
-            border-bottom: 1px solid var(--slate-200);
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 50;
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 24px 64px;
         }
-
-        .navbar-brand {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--navy-dark);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .navbar-brand span { color: var(--primary); }
-
-        .btn-logout {
-            padding: 8px 14px;
-            border: 1px solid var(--slate-200);
-            border-radius: 8px;
-            font-size: 13px;
-            color: var(--slate-600);
-            text-decoration: none;
-            transition: all 0.15s ease;
-        }
-
-        .btn-logout:hover { background-color: var(--danger-bg); color: var(--danger); border-color: #fca5a5; }
-
-        /* Container */
-        .container { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
 
         .page-title {
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-main);
             margin-bottom: 6px;
         }
 
-        .page-subtitle { font-size: 14px; color: var(--slate-600); margin-bottom: 28px; }
-
-        /* Alertes */
-        .alert {
-            padding: 14px 16px;
-            border-radius: 10px;
+        .page-subtitle {
             font-size: 14px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .alert-danger { background-color: var(--danger-bg); border: 1px solid #fecaca; color: #991b1b; }
-        .alert-success { background-color: var(--success-bg); border: 1px solid #a7f3d0; color: #065f46; }
-
-        /* Formulaire */
-        .card {
-            background: #fff;
-            border: 1px solid var(--slate-200);
-            border-radius: 14px;
-            padding: 24px;
+            color: var(--text-muted);
             margin-bottom: 28px;
         }
 
-        .card-title { font-size: 16px; font-weight: 600; margin-bottom: 18px; }
-
-        .form-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 14px; align-items: end; }
-
-        @media (max-width: 640px) { .form-row { grid-template-columns: 1fr; } }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--slate-800);
-            margin-bottom: 6px;
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 14px;
+            align-items: end;
         }
 
-        .form-control {
-            width: 100%;
-            padding: 10px 14px;
-            font-size: 14px;
-            border: 1px solid var(--slate-200);
-            border-radius: 8px;
-            background-color: #fff;
-            color: var(--navy-dark);
-            transition: border-color 0.15s, box-shadow 0.15s;
+        @media (max-width: 640px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        .beneficiaire-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
         }
-
-        .btn-primary {
-            padding: 10px 20px;
-            background-color: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            white-space: nowrap;
-        }
-
-        .btn-primary:hover { background-color: var(--primary-dark); }
-
-        /* Liste des bénéficiaires */
-        .beneficiaire-list { display: flex; flex-direction: column; gap: 12px; }
 
         .beneficiaire-item {
-            background: #fff;
-            border: 1px solid var(--slate-200);
-            border-radius: 12px;
-            padding: 16px 20px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
+            padding: 18px 22px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            transition: border-color 0.2s;
+            transition: var(--transition);
+            box-shadow: var(--shadow-card);
         }
 
-        .beneficiaire-item:hover { border-color: #cbd5e1; }
-
-        .beneficiaire-info { display: flex; flex-direction: column; gap: 4px; }
-
-        .beneficiaire-nom { font-size: 15px; font-weight: 600; color: var(--navy-dark); }
-
-        .beneficiaire-rib { font-size: 12px; font-family: monospace; color: var(--slate-600); }
-
-        .btn-delete {
-            padding: 7px 14px;
-            background-color: var(--danger-bg);
-            color: var(--danger);
-            border: 1px solid #fecaca;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s;
+        .beneficiaire-item:hover {
+            border-color: var(--gold-border);
+            transform: translateY(-1px);
         }
 
-        .btn-delete:hover { background-color: var(--danger); color: #fff; }
+        .beneficiaire-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .beneficiaire-nom {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .beneficiaire-rib {
+            font-size: 12.5px;
+            font-family: 'DM Sans', monospace;
+            color: var(--gold-light);
+            letter-spacing: 0.5px;
+        }
 
         .empty-state {
             text-align: center;
             padding: 40px;
-            color: var(--slate-400);
+            color: var(--text-muted);
             font-size: 14px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
         }
 
         .btn-back {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            font-size: 14px;
-            color: var(--slate-600);
+            font-size: 13.5px;
+            color: var(--text-muted);
             text-decoration: none;
             margin-bottom: 20px;
+            transition: var(--transition);
         }
 
-        .btn-back:hover { color: var(--primary); }
+        .btn-back:hover {
+            color: var(--gold-light);
+        }
     </style>
 </head>
 <body>
     <!-- Navbar -->
     <header class="navbar">
         <a href="/client/dashboard" class="navbar-brand">
-            Hos<span>Bank</span>
+            <div class="brand-icon">H</div>
+            <span>Hos<span>Bank</span></span>
         </a>
+
+        <nav class="navbar-nav">
+            <a href="/client/dashboard" class="nav-link">Tableau de bord</a>
+            <a href="/client/beneficiaires" class="nav-link active">Bénéficiaires</a>
+            <a href="/client/carte" class="nav-link">Carte Virtuelle</a>
+        </nav>
+
         <a href="/auth/logout" class="btn-logout">Déconnexion</a>
     </header>
 
@@ -215,7 +137,7 @@
         <a href="/client/dashboard" class="btn-back">← Retour au tableau de bord</a>
 
         <div class="page-title">Mes Bénéficiaires</div>
-        <p class="page-subtitle">Gérez vos bénéficiaires pour effectuer des virements facilement.</p>
+        <p class="page-subtitle">Gérez vos bénéficiaires pour exécuter vos virements bancaires en toute sérénité.</p>
 
         <!-- Alertes -->
         <% if (error) { %>
@@ -227,11 +149,11 @@
 
         <!-- Formulaire d'ajout -->
         <div class="card">
-            <div class="card-title">Ajouter un bénéficiaire</div>
+            <div class="card-title">Ajouter un nouveau bénéficiaire</div>
             <form action="/client/beneficiaires" method="POST">
                 <div class="form-row">
-                    <div class="form-group">
-                        <label for="nom_beneficiaire">Nom complet</label>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="nom_beneficiaire">Nom complet du titulaire</label>
                         <input
                             type="text"
                             id="nom_beneficiaire"
@@ -241,8 +163,8 @@
                             required
                         >
                     </div>
-                    <div class="form-group">
-                        <label for="rib">RIB (24 chiffres)</label>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="rib">RIB marocain (24 chiffres)</label>
                         <input
                             type="text"
                             id="rib"
@@ -253,15 +175,13 @@
                             required
                         >
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn-primary">Ajouter</button>
-                    </div>
+                    <button type="submit" class="btn btn-primary" style="height: 42px;">+ Ajouter</button>
                 </div>
             </form>
         </div>
 
         <!-- Liste des bénéficiaires -->
-        <div class="card-title">Liste des bénéficiaires (<%= beneficiaires.length %>)</div>
+        <div class="card-title" style="margin-bottom: 16px;">Liste de vos bénéficiaires (<%= beneficiaires.length %>)</div>
 
         <% if (beneficiaires && beneficiaires.length > 0) { %>
             <div class="beneficiaire-list">
@@ -271,8 +191,8 @@
                             <span class="beneficiaire-nom"><%= b.nom_beneficiaire %></span>
                             <span class="beneficiaire-rib">RIB : <%= b.rib %></span>
                         </div>
-                        <form action="/client/beneficiaires/<%= b.id %>/delete" method="POST">
-                            <button type="submit" class="btn-delete"
+                        <form action="/client/beneficiaires/<%= b.id %>/delete" method="POST" style="margin: 0;">
+                            <button type="submit" class="btn btn-danger-outline btn-sm"
                                 onclick="return confirm('Voulez-vous supprimer ce bénéficiaire ?')">
                                 Supprimer
                             </button>

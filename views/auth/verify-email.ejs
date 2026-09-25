@@ -3,34 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vérification de l'adresse e-mail - HosBank</title>
+    <title>Vérification de l'adresse e-mail - HosBank Private Banking</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/theme.css">
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --navy-dark: #0f172a;
-            --slate-800: #1e293b;
-            --slate-600: #475569;
-            --slate-400: #94a3b8;
-            --slate-200: #e2e8f0;
-            --slate-50: #f8fafc;
-            --danger: #ef4444;
-            --success: #10b981;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-        }
-
         body {
-            background-color: var(--slate-50);
-            color: var(--navy-dark);
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -41,32 +22,64 @@
         .auth-container {
             width: 100%;
             max-width: 480px;
-            background: #ffffff;
-            border: 1px solid var(--slate-200);
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
+            background: var(--bg-surface);
+            border: 1px solid var(--gold-border);
+            border-radius: var(--radius-md);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), var(--gold-glow);
             overflow: hidden;
             text-align: center;
+            position: relative;
+        }
+
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), var(--gold-light), transparent);
         }
 
         .auth-header {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-            color: #ffffff;
-            padding: 28px 24px;
+            padding: 32px 24px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+            background: linear-gradient(180deg, rgba(201, 162, 39, 0.04) 0%, transparent 100%);
         }
 
-        .brand-logo {
+        .brand-logo-wrap {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
-            font-size: 24px;
-            font-weight: 700;
         }
 
-        .brand-logo svg {
-            width: 30px;
-            height: 30px;
-            fill: #60a5fa;
+        .brand-logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(201, 162, 39, 0.35);
+        }
+
+        .brand-logo-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: #0B0B0B;
+        }
+
+        .brand-logo-text {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+        }
+
+        .brand-logo-text span {
+            color: var(--gold-primary);
         }
 
         .auth-body {
@@ -84,13 +97,15 @@
         }
 
         .status-icon.success {
-            background-color: #ecfdf5;
+            background-color: var(--success-bg);
             color: var(--success);
+            border: 1px solid var(--success-border);
         }
 
         .status-icon.error {
-            background-color: #fef2f2;
+            background-color: var(--danger-bg);
             color: var(--danger);
+            border: 1px solid var(--danger-border);
         }
 
         .status-icon svg {
@@ -101,54 +116,28 @@
         h2 {
             font-size: 22px;
             font-weight: 700;
-            color: var(--navy-dark);
+            color: var(--text-main);
             margin-bottom: 12px;
         }
 
         p {
-            font-size: 15px;
-            color: var(--slate-600);
+            font-size: 14.5px;
+            color: var(--text-secondary);
             line-height: 1.6;
             margin-bottom: 28px;
-        }
-
-        .btn-action {
-            display: inline-block;
-            padding: 12px 28px;
-            background-color: var(--primary);
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            transition: background-color 0.2s ease;
-        }
-
-        .btn-action:hover {
-            background-color: var(--primary-hover);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--slate-600);
-            border: 1px solid var(--slate-200);
-            margin-left: 10px;
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--slate-50);
-            color: var(--navy-dark);
         }
     </style>
 </head>
 <body>
     <div class="auth-container">
         <div class="auth-header">
-            <div class="brand-logo">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                </svg>
-                <span>HosBank</span>
+            <div class="brand-logo-wrap">
+                <div class="brand-logo-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <div class="brand-logo-text">Hos<span>Bank</span></div>
             </div>
         </div>
 
@@ -162,7 +151,9 @@
                 </div>
                 <h2>Activation Réussie !</h2>
                 <p><%= message %></p>
-                <a href="/auth/login" class="btn-action">Se connecter à mon espace</a>
+                <a href="/auth/login" class="btn btn-primary" style="padding: 12px 28px;">
+                    Se connecter à mon espace
+                </a>
             <% } else { %>
                 <div class="status-icon error">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -173,8 +164,10 @@
                 </div>
                 <h2>Échec de la validation</h2>
                 <p><%= message %></p>
-                <a href="/auth/register" class="btn-action">Créer un compte</a>
-                <a href="/auth/login" class="btn-action btn-secondary">Connexion</a>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <a href="/auth/register" class="btn btn-primary">Créer un compte</a>
+                    <a href="/auth/login" class="btn btn-outline">Connexion</a>
+                </div>
             <% } %>
         </div>
     </div>
