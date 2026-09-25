@@ -20,7 +20,7 @@ const createApp = (sessionUser = null) => {
         saveUninitialized: false
     }));
 
-    // Middleware d'injection de session pour les tests
+    
     app.use((req, res, next) => {
         if (sessionUser) {
             req.session.user = sessionUser;
@@ -81,7 +81,7 @@ describe('clientRoutes - HOS-31 / HOS-33 RBAC & HTTP Isolation', () => {
         expect(response.text).toContain('Tableau de bord Client - HosBank');
         expect(response.text).toContain('12 500,00 MAD');
         expect(response.text).toContain('Bonjour, Adnane');
-        // Vérification que le clientId passé au service est bien celui de la session
+        
         expect(compteService.getDashboardData).toHaveBeenCalledWith(42);
     });
 });

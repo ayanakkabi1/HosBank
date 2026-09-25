@@ -1,8 +1,8 @@
 import * as adminStatsRepository from '../repositories/adminStatsRepository.js';
 
-/**
- * Récupère l'historique complet des virements et opérations bancaires
- */
+
+
+
 export const getVirementsOverview = async (limit = 100, offset = 0) => {
     const virements = await adminStatsRepository.getAllVirements(limit, offset);
     return virements.map(v => ({
@@ -22,9 +22,9 @@ export const getVirementsOverview = async (limit = 100, offset = 0) => {
     }));
 };
 
-/**
- * Récupère toutes les demandes clients de la plateforme
- */
+
+
+
 export const getDemandesOverview = async (limit = 100, offset = 0) => {
     const demandes = await adminStatsRepository.getAllDemandes(limit, offset);
     return demandes.map(d => ({
@@ -45,9 +45,9 @@ export const getDemandesOverview = async (limit = 100, offset = 0) => {
     }));
 };
 
-/**
- * Récupère toutes les réclamations de la plateforme
- */
+
+
+
 export const getReclamationsOverview = async (limit = 100, offset = 0) => {
     const reclamations = await adminStatsRepository.getAllReclamations(limit, offset);
     return reclamations.map(r => ({
@@ -70,9 +70,9 @@ export const getReclamationsOverview = async (limit = 100, offset = 0) => {
     }));
 };
 
-/**
- * Supervision des activités et de la charge de travail des chargés de clientèle
- */
+
+
+
 export const getSupervisionCharges = async () => {
     const charges = await adminStatsRepository.getSupervisionCharges();
     return charges.map(c => ({
@@ -87,9 +87,9 @@ export const getSupervisionCharges = async () => {
     }));
 };
 
-/**
- * Agrégation consolidée des statistiques générales de la plateforme
- */
+
+
+
 export const getPlatformGlobalStats = async () => {
     const [financial, demandesAgg, reclamationsAgg, usersAgg] = await Promise.all([
         adminStatsRepository.getGlobalFinancialStats(),
@@ -98,7 +98,7 @@ export const getPlatformGlobalStats = async () => {
         adminStatsRepository.getUsersAggregation()
     ]);
 
-    // Répartition utilisateurs
+    
     let totalUsers = 0;
     const usersByRole = { client: 0, charge_clientele: 0, admin: 0 };
     const usersByStatut = { actif: 0, inactif: 0, en_attente: 0, bloque: 0 };
@@ -110,7 +110,7 @@ export const getPlatformGlobalStats = async () => {
         if (usersByStatut[row.statut] !== undefined) usersByStatut[row.statut] += count;
     });
 
-    // Agrégations demandes
+    
     let totalDemandes = 0;
     const demandesByStatut = { en_attente: 0, validee: 0, refusee: 0 };
     demandesAgg.parStatut.forEach(row => {
@@ -119,7 +119,7 @@ export const getPlatformGlobalStats = async () => {
         if (demandesByStatut[row.statut] !== undefined) demandesByStatut[row.statut] += count;
     });
 
-    // Agrégations réclamations
+    
     let totalReclamations = 0;
     const reclamationsByStatut = { en_attente: 0, en_cours: 0, resolue: 0, rejetee: 0 };
     reclamationsAgg.forEach(row => {

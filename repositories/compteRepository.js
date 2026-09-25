@@ -1,10 +1,10 @@
 import pool from '../config/db.js';
 
-/**
- * Récupère tous les comptes bancaires appartenant à un client
- * @param {number} clientId 
- * @returns {Promise<Array>}
- */
+
+
+
+
+
 export const getComptesByClientId = async (clientId) => {
     const [rows] = await pool.query(
         `SELECT id, rib, solde, type_compte, statut, created_at 
@@ -16,11 +16,11 @@ export const getComptesByClientId = async (clientId) => {
     return rows;
 };
 
-/**
- * Calcule le solde total consolidé des comptes actifs du client
- * @param {number} clientId 
- * @returns {Promise<number>}
- */
+
+
+
+
+
 export const getTotalSoldeByClientId = async (clientId) => {
     const [rows] = await pool.query(
         `SELECT COALESCE(SUM(solde), 0) AS total_solde 
@@ -31,12 +31,12 @@ export const getTotalSoldeByClientId = async (clientId) => {
     return parseFloat(rows[0]?.total_solde || 0);
 };
 
-/**
- * Récupère les opérations récentes (débits et crédits) pour les comptes d'un client
- * @param {number} clientId 
- * @param {number} limit 
- * @returns {Promise<Array>}
- */
+
+
+
+
+
+
 export const getRecentOperationsByClientId = async (clientId, limit = 5) => {
     const [rows] = await pool.query(
         `SELECT 
@@ -62,14 +62,14 @@ export const getRecentOperationsByClientId = async (clientId, limit = 5) => {
     return rows;
 };
 
-/**
- * Crée un compte bancaire pour un client
- * @param {string} rib 
- * @param {number} clientId 
- * @param {number} soldeInitial 
- * @param {string} typeCompte 
- * @returns {Promise<number>} ID du compte créé
- */
+
+
+
+
+
+
+
+
 export const createCompte = async (rib, clientId, soldeInitial = 1000.00, typeCompte = 'courant') => {
     const [result] = await pool.query(
         `INSERT INTO comptes (rib, solde, type_compte, statut, client_id) 

@@ -43,7 +43,7 @@
             flex-direction: column;
         }
 
-        /* Navbar */
+        
         .navbar {
             background-color: #ffffff;
             border-bottom: 1px solid var(--slate-200);
@@ -123,7 +123,7 @@
             color: var(--danger);
         }
 
-        /* Container */
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -131,7 +131,7 @@
             width: 100%;
         }
 
-        /* Welcome Section */
+        
         .welcome-header {
             margin-bottom: 28px;
         }
@@ -148,7 +148,7 @@
             color: var(--slate-600);
         }
 
-        /* Overview Grid */
+        
         .overview-grid {
             display: grid;
             grid-template-columns: 1.2fr 2fr;
@@ -162,7 +162,7 @@
             }
         }
 
-        /* Solde Total Card */
+        
         .card-solde-total {
             background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
             color: #ffffff;
@@ -219,7 +219,7 @@
             font-weight: 500;
         }
 
-        /* Quick Actions Card */
+        
         .card-quick-actions {
             background: #ffffff;
             border: 1px solid var(--slate-200);
@@ -280,7 +280,7 @@
             color: var(--primary);
         }
 
-        /* Comptes Grid */
+        
         .comptes-section {
             margin-bottom: 36px;
         }
@@ -375,7 +375,7 @@
             margin-top: 4px;
         }
 
-        /* Operations Section */
+        
         .operations-section {
             background: #ffffff;
             border: 1px solid var(--slate-200);
@@ -428,7 +428,7 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+    
     <header class="navbar">
         <a href="/client/dashboard" class="navbar-brand">
             <svg viewBox="0 0 24 24">
@@ -454,17 +454,15 @@
         </div>
     </header>
 
-    <!-- Main Content -->
+    
     <main class="container">
-        <!-- Welcome header -->
+        
         <div class="welcome-header">
             <h1>Bonjour, <%= user && user.prenom ? user.prenom : '' %> 👋</h1>
             <p>Bienvenue sur votre espace bancaire HosBank. Retrouvez l'état consolidé de vos comptes et opérations.</p>
         </div>
 
-        <!-- Overview grid (Solde + Actions) -->
         <div class="overview-grid">
-            <!-- Solde Total Card -->
             <div class="card-solde-total">
                 <div>
                     <div class="solde-label">Solde Total Consolidé</div>
@@ -476,7 +474,6 @@
                 </div>
             </div>
 
-            <!-- Quick Actions Card -->
             <div class="card-quick-actions">
                 <div class="section-title">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -565,7 +562,7 @@
             <% } %>
         </div>
 
-        <!-- Recent Operations Section -->
+        
         <div class="operations-section">
             <div class="section-title">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

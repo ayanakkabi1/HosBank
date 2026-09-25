@@ -1,8 +1,52 @@
 import pool from '../config/db.js';
 
-/**
- * Récupère tous les utilisateurs avec le décompte de leurs comptes bancaires
- */
+export const findClients = async () => {
+    const [rows] = await pool.query(
+        `SELECT id, nom, prenom, email, statut, charge_id
+         FROM users
+         WHERE role = 'client'
+         ORDER BY nom, prenom`
+    );
+    return rows;
+};
+
+export const findChargeClients = async () => {
+    const [rows] = await pool.query(
+        `SELECT id, nom, prenom, email, statut
+         FROM users
+         WHERE role = 'charge_clientele'
+         ORDER BY nom, prenom`
+    );
+    return rows;
+};
+
+export const findClientById = async (id) => {
+    const [rows] = await pool.query(
+        "SELECT id, role FROM users WHERE id = ? AND role = 'client'",
+        [id]
+    );
+    return rows[0] || null;
+};
+
+export const findChargeClientById = async (id) => {
+    const [rows] = await pool.query(
+        "SELECT id, role FROM users WHERE id = ? AND role = 'charge_clientele'",
+        [id]
+    );
+    return rows[0] || null;
+};
+
+export const assignClientToCharge = async (clientId, chargeId) => {
+    const [result] = await pool.query(
+        "UPDATE users SET charge_id = ? WHERE id = ? AND role = 'client'",
+        [chargeId, clientId]
+    );
+    return result.affectedRows > 0;
+};
+
+
+
+
 export const getAllUsers = async () => {
     const [rows] = await pool.query(`
         SELECT u.id, u.nom, u.prenom, u.email, u.role, u.statut, u.created_at,
@@ -15,9 +59,9 @@ export const getAllUsers = async () => {
     return rows;
 };
 
-/**
- * Récupère un utilisateur par son identifiant
- */
+
+
+
 export const getUserById = async (id) => {
     const [rows] = await pool.query(
         'SELECT id, nom, prenom, email, role, statut, created_at FROM users WHERE id = ?',
@@ -26,9 +70,9 @@ export const getUserById = async (id) => {
     return rows[0] || null;
 };
 
-/**
- * Récupère un utilisateur par email (utile pour vérifier l'unicité)
- */
+
+
+
 export const getUserByEmail = async (email) => {
     const [rows] = await pool.query(
         'SELECT id, email FROM users WHERE email = ?',
@@ -37,9 +81,9 @@ export const getUserByEmail = async (email) => {
     return rows[0] || null;
 };
 
-/**
- * Crée un nouvel utilisateur avec rôle et statut spécifiés
- */
+
+
+
 export const createUser = async ({ nom, prenom, email, password, role = 'client', statut = 'actif' }) => {
     const [result] = await pool.query(
         `INSERT INTO users (nom, prenom, email, password, role, statut)
@@ -49,9 +93,9 @@ export const createUser = async ({ nom, prenom, email, password, role = 'client'
     return result.insertId;
 };
 
-/**
- * Met à jour les informations d'un utilisateur (nom, prénom, email, rôle, statut)
- */
+
+
+
 export const updateUser = async (id, { nom, prenom, email, role, statut }) => {
     const [result] = await pool.query(
         `UPDATE users
@@ -62,9 +106,9 @@ export const updateUser = async (id, { nom, prenom, email, role, statut }) => {
     return result.affectedRows > 0;
 };
 
-/**
- * Met à jour le statut d'un utilisateur (actif, inactif, etc.)
- */
+
+
+
 export const updateUserStatus = async (id, statut) => {
     const [result] = await pool.query(
         'UPDATE users SET statut = ? WHERE id = ?',
@@ -73,9 +117,9 @@ export const updateUserStatus = async (id, statut) => {
     return result.affectedRows > 0;
 };
 
-/**
- * Supprime un utilisateur par son ID
- */
+
+
+
 export const deleteUser = async (id) => {
     const [result] = await pool.query(
         'DELETE FROM users WHERE id = ?',
@@ -84,9 +128,9 @@ export const deleteUser = async (id) => {
     return result.affectedRows > 0;
 };
 
-/**
- * Récupère tous les comptes avec le nom complet de leur titulaire
- */
+
+
+
 export const getAllComptes = async () => {
     const [rows] = await pool.query(`
         SELECT c.id, c.rib, c.solde, c.type_compte, c.statut, c.client_id, c.created_at,
@@ -98,9 +142,9 @@ export const getAllComptes = async () => {
     return rows;
 };
 
-/**
- * Récupère un compte par son ID
- */
+
+
+
 export const getCompteById = async (id) => {
     const [rows] = await pool.query(
         'SELECT * FROM comptes WHERE id = ?',
@@ -109,9 +153,9 @@ export const getCompteById = async (id) => {
     return rows[0] || null;
 };
 
-/**
- * Crée un compte bancaire
- */
+
+
+
 export const createCompte = async ({ rib, solde = 0.00, type_compte = 'courant', statut = 'actif', client_id }) => {
     const [result] = await pool.query(
         `INSERT INTO comptes (rib, solde, type_compte, statut, client_id)
@@ -121,9 +165,9 @@ export const createCompte = async ({ rib, solde = 0.00, type_compte = 'courant',
     return result.insertId;
 };
 
-/**
- * Met à jour le statut d'un compte (actif, suspendu, clôturé)
- */
+
+
+
 export const updateCompteStatus = async (id, statut) => {
     const [result] = await pool.query(
         'UPDATE comptes SET statut = ? WHERE id = ?',
@@ -132,9 +176,9 @@ export const updateCompteStatus = async (id, statut) => {
     return result.affectedRows > 0;
 };
 
-/**
- * Récupère toutes les cartes bancaires avec le RIB et titulaire associé
- */
+
+
+
 export const getAllCartes = async () => {
     const [rows] = await pool.query(`
         SELECT k.id, k.numero_carte, k.type_carte, k.date_expiration, k.plafond, k.statut, k.compte_id, k.created_at,
@@ -147,9 +191,9 @@ export const getAllCartes = async () => {
     return rows;
 };
 
-/**
- * Récupère une carte par son ID
- */
+
+
+
 export const getCarteById = async (id) => {
     const [rows] = await pool.query(
         'SELECT * FROM cartes WHERE id = ?',
@@ -158,9 +202,9 @@ export const getCarteById = async (id) => {
     return rows[0] || null;
 };
 
-/**
- * Crée une carte bancaire pour un compte
- */
+
+
+
 export const createCarte = async ({ numero_carte, type_carte = 'virtuelle', date_expiration, plafond = 5000.00, statut = 'active', compte_id }) => {
     const [result] = await pool.query(
         `INSERT INTO cartes (numero_carte, type_carte, date_expiration, plafond, statut, compte_id)
@@ -170,9 +214,7 @@ export const createCarte = async ({ numero_carte, type_carte = 'virtuelle', date
     return result.insertId;
 };
 
-/**
- * Met à jour le statut d'une carte (active, bloquee, desactivee)
- */
+
 export const updateCarteStatus = async (id, statut) => {
     const [result] = await pool.query(
         'UPDATE cartes SET statut = ? WHERE id = ?',

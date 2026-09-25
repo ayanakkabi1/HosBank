@@ -30,7 +30,7 @@
 
         body { background-color: var(--slate-50); color: var(--navy-dark); min-height: 100vh; }
 
-        /* Navbar */
+        
         .navbar {
             background: #fff;
             border-bottom: 1px solid var(--slate-200);
@@ -67,7 +67,7 @@
 
         .btn-logout:hover { background-color: var(--danger-bg); color: var(--danger); border-color: #fca5a5; }
 
-        /* Container */
+        
         .container { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
 
         .btn-back {
@@ -92,7 +92,7 @@
 
         .page-subtitle { font-size: 14px; color: var(--slate-600); margin-bottom: 28px; }
 
-        /* Alertes */
+        
         .alert {
             padding: 14px 16px;
             border-radius: 10px;
@@ -106,7 +106,7 @@
         .alert-danger { background-color: var(--danger-bg); border: 1px solid #fecaca; color: #991b1b; }
         .alert-success { background-color: var(--success-bg); border: 1px solid #a7f3d0; color: #065f46; }
 
-        /* Section Demande */
+        
         .card-preview-section {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -123,7 +123,7 @@
             .card-preview-section { grid-template-columns: 1fr; }
         }
 
-        /* Virtual Card Illustration */
+        
         .virtual-card {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #2563eb 100%);
             border-radius: 16px;
@@ -196,7 +196,7 @@
             font-weight: 600;
         }
 
-        /* Form & Info */
+        
         .info-title {
             font-size: 18px;
             font-weight: 700;
@@ -253,7 +253,7 @@
             transform: scale(0.99);
         }
 
-        /* Tableau d'historique */
+        
         .section-header {
             display: flex;
             align-items: center;
@@ -318,7 +318,7 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+    
     <header class="navbar">
         <a href="/client/dashboard" class="navbar-brand">
             Hos<span>Bank</span>
@@ -332,7 +332,7 @@
         <div class="page-title">Demande de Carte Virtuelle</div>
         <p class="page-subtitle">Commandez votre carte bancaire virtuelle pour payer en ligne en toute sécurité.</p>
 
-        <!-- Messages Flash -->
+        
         <% if (error) { %>
             <div class="alert alert-danger"><%= error %></div>
         <% } %>
@@ -340,7 +340,7 @@
             <div class="alert alert-success"><%= success %></div>
         <% } %>
 
-        <!-- Aperçu de la carte et formulaire -->
+        
         <div class="card-preview-section">
             <div class="virtual-card">
                 <div class="card-top">
@@ -373,7 +373,6 @@
             </div>
         </div>
 
-        <!-- Historique des demandes -->
         <div class="section-header">
             <h2 class="section-title">Mes demandes (<%= (demandes && demandes.length) || 0 %>)</h2>
         </div>

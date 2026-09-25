@@ -1,10 +1,10 @@
 import * as compteRepository from '../repositories/compteRepository.js';
 
-/**
- * Formate un nombre en montant monétaire MAD (Dirham marocain)
- * @param {number|string} amount 
- * @returns {string}
- */
+
+
+
+
+
 export const formatCurrency = (amount) => {
     const num = parseFloat(amount) || 0;
     return new Intl.NumberFormat('fr-FR', {
@@ -15,21 +15,21 @@ export const formatCurrency = (amount) => {
     }).format(num);
 };
 
-/**
- * Formate un RIB avec des séparateurs d'espaces pour la lisibilité
- * @param {string} rib 
- * @returns {string}
- */
+
+
+
+
+
 export const formatRib = (rib) => {
     if (!rib) return '';
     return rib.replace(/(.{4})/g, '$1 ').trim();
 };
 
-/**
- * Récupère l'ensemble des données nécessaires au tableau de bord client
- * @param {number} clientId 
- * @returns {Promise<Object>}
- */
+
+
+
+
+
 export const getDashboardData = async (clientId) => {
     if (!clientId) {
         throw new Error('Identifiant client manquant ou invalide.');

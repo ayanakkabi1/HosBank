@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS hosebank_db;
 USE hosebank_db;
 
--- Table Utilisateurs 
+
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(50) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS users (
     FOREIGN KEY (charge_id) REFERENCES users(id) ON DELETE SET NULL
 ) ;
 
--- Table Comptes Bancaires
+
 CREATE TABLE IF NOT EXISTS comptes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     rib VARCHAR(24) NOT NULL UNIQUE,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS comptes (
     FOREIGN KEY (client_id) REFERENCES users(id) ON DELETE CASCADE
 ) ;
 
--- Table Beneficiaires 
+
 CREATE TABLE IF NOT EXISTS beneficiaires (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom_beneficiaire VARCHAR(100) NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS beneficiaires (
     FOREIGN KEY (client_id) REFERENCES users(id) ON DELETE CASCADE
 ) ;
 
--- Table Virements
+
 CREATE TABLE IF NOT EXISTS virements (
     id INT AUTO_INCREMENT PRIMARY KEY,
     montant DECIMAL(15, 2) NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS virements (
     FOREIGN KEY (compte_destination_id) REFERENCES comptes(id) ON DELETE RESTRICT
 ) ;
 
--- Table Demandes 
+
 CREATE TABLE IF NOT EXISTS demandes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     type_demande VARCHAR(50) NOT NULL, 
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS demandes (
     FOREIGN KEY (traite_par_id) REFERENCES users(id) ON DELETE SET NULL
 ) ;
 
--- Table des Cartes Bancaires
+
 CREATE TABLE IF NOT EXISTS cartes (
     id INT AUTO_INCREMENT PRIMARY KEY,
     numero_carte VARCHAR(16) NOT NULL UNIQUE,
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS cartes (
     FOREIGN KEY (compte_id) REFERENCES comptes(id) ON DELETE CASCADE
 ) ;
 
---  Table des Reclamations
+
 CREATE TABLE IF NOT EXISTS reclamations (
     id INT AUTO_INCREMENT PRIMARY KEY,
     sujet VARCHAR(150) NOT NULL,

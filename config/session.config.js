@@ -7,7 +7,7 @@ export default {
   cookie : { 
     maxAge: 1000 * 60 * 60,
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production', // Passe en HTTPS en production
+    secure: process.env.NODE_ENV === 'production', 
     sameSite: 'lax'
   }
 }

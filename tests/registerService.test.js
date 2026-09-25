@@ -7,6 +7,11 @@ jest.unstable_mockModule('../repositories/registerRepository.js', () => ({
     activateUserAccount: jest.fn()
 }));
 
+jest.unstable_mockModule('../repositories/compteRepository.js', () => ({
+    createCompte: jest.fn(),
+    getComptesByClientId: jest.fn().mockResolvedValue([])
+}));
+
 jest.unstable_mockModule('../services/emailService.js', () => ({
     sendVerificationEmail: jest.fn().mockResolvedValue('http://mocklink')
 }));
