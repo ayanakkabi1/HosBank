@@ -25,3 +25,4 @@ export const createDemande = async (clientId, typeDemande) => {
     );
     return result.insertId;
 };
+

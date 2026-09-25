@@ -32,3 +32,4 @@ export const getClientAccountRib = async (clientId, accountId) => {
 
     return account.rib;
 };
+
