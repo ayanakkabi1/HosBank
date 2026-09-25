@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - HosBank</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --navy-dark: #0f172a;
+            --slate-800: #1e293b;
+            --slate-600: #475569;
+            --slate-400: #94a3b8;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            --danger: #ef4444;
+            --danger-bg: #fef2f2;
+            --success: #10b981;
+            --success-bg: #ecfdf5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--slate-50);
+            color: var(--navy-dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 500px;
+            background: #ffffff;
+            border: 1px solid var(--slate-200);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+            overflow: hidden;
+        }
+
+        .auth-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: #ffffff;
+            padding: 32px 28px;
+            text-align: center;
+        }
+
+        .brand-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .brand-logo svg {
+            width: 32px;
+            height: 32px;
+            fill: #60a5fa;
+        }
+
+        .auth-header p {
+            color: var(--slate-400);
+            font-size: 14px;
+        }
+
+        .auth-body {
+            padding: 32px 28px;
+        }
+
+        .alert {
+            padding: 14px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.4;
+        }
+
+        .alert-danger {
+            background-color: var(--danger-bg);
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+
+        .alert-success {
+            background-color: var(--success-bg);
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--slate-800);
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 11px 14px;
+            font-size: 14px;
+            border: 1px solid var(--slate-200);
+            border-radius: 8px;
+            background-color: #ffffff;
+            color: var(--navy-dark);
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .password-hint {
+            font-size: 12px;
+            color: var(--slate-600);
+            margin-top: 4px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px 16px;
+            background-color: var(--primary);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-submit:active {
+            transform: scale(0.99);
+        }
+
+        .auth-footer {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--slate-200);
+            text-align: center;
+            font-size: 14px;
+            color: var(--slate-600);
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="brand-logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <span>HosBank</span>
+            </div>
+            <p>Ouvrez votre compte bancaire en quelques minutes</p>
+        </div>
+
+        <div class="auth-body">
+            <% if (error) { %>
+                <div class="alert alert-danger" role="alert">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <span><%= error %></span>
+                </div>
+            <% } %>
+
+            <% if (success) { %>
+                <div class="alert alert-success" role="alert">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span><%= success %></span>
+                </div>
+                <div style="text-align: center; margin-top: 16px;">
+                    <a href="/auth/login" class="btn-submit" style="display:inline-block; text-decoration:none; padding:10px 20px; width:auto;">
+                        Aller à la connexion
+                    </a>
+                </div>
+            <% } else { %>
+                <form action="/auth/register" method="POST" novalidate>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nom">Nom</label>
+                            <input 
+                                type="text" 
+                                id="nom" 
+                                name="nom" 
+                                class="form-control" 
+                                placeholder="ex: Dupont"
+                                value="<%= formData && formData.nom ? formData.nom : '' %>"
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="prenom">Prénom</label>
+                            <input 
+                                type="text" 
+                                id="prenom" 
+                                name="prenom" 
+                                class="form-control" 
+                                placeholder="ex: Jean"
+                                value="<%= formData && formData.prenom ? formData.prenom : '' %>"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Adresse e-mail</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-control" 
+                            placeholder="jean.dupont@example.com"
+                            value="<%= formData && formData.email ? formData.email : '' %>"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-control" 
+                            placeholder="••••••••" 
+                            minlength="8"
+                            required
+                        >
+                        <div class="password-hint">8 caractères minimum avec au moins 1 lettre et 1 chiffre.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="passwordConfirmation">Confirmer le mot de passe</label>
+                        <input 
+                            type="password" 
+                            id="passwordConfirmation" 
+                            name="passwordConfirmation" 
+                            class="form-control" 
+                            placeholder="••••••••" 
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        Créer mon compte
+                    </button>
+                </form>
+            <% } %>
+
+            <div class="auth-footer">
+                Vous avez déjà un compte ? <a href="/auth/login">Se connecter</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
