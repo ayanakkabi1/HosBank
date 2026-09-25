@@ -1,48 +1,5 @@
 import pool from '../config/db.js';
 
-export const findClients = async () => {
-    const [rows] = await pool.query(
-        `SELECT id, nom, prenom, email, statut, charge_id
-         FROM users
-         WHERE role = 'client'
-         ORDER BY nom, prenom`
-    );
-    return rows;
-};
-
-export const findChargeClients = async () => {
-    const [rows] = await pool.query(
-        `SELECT id, nom, prenom, email, statut
-         FROM users
-         WHERE role = 'charge_clientele'
-         ORDER BY nom, prenom`
-    );
-    return rows;
-};
-
-export const findClientById = async (id) => {
-    const [rows] = await pool.query(
-        "SELECT id, role FROM users WHERE id = ? AND role = 'client'",
-        [id]
-    );
-    return rows[0] || null;
-};
-
-export const findChargeClientById = async (id) => {
-    const [rows] = await pool.query(
-        "SELECT id, role FROM users WHERE id = ? AND role = 'charge_clientele'",
-        [id]
-    );
-    return rows[0] || null;
-};
-
-export const assignClientToCharge = async (clientId, chargeId) => {
-    const [result] = await pool.query(
-        "UPDATE users SET charge_id = ? WHERE id = ? AND role = 'client'",
-        [chargeId, clientId]
-    );
-    return result.affectedRows > 0;
-};
 
 
 
