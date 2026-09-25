@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { renderAccounts, processSavingsRequest, getRibJson } from '../controllers/Client/ClientaccountController.js';
 import { createVirement, getVirementHistory } from '../controllers/Client/virementController.js';
+import { renderPinRequest, processPinRequest } from '../controllers/Client/ClientPinController.js';
 import { isAuth } from '../middlewares/authmiddleware.js';
 import { hasRole } from '../middlewares/authmiddleware.js';
 
@@ -11,5 +12,7 @@ router.post('/accounts/request-savings', isAuth, hasRole(['client']), processSav
 router.get('/accounts/:id/rib', isAuth, hasRole(['client']), getRibJson);
 router.post('/transfers', isAuth, hasRole(['client']), createVirement);
 router.get('/transfers', isAuth, hasRole(['client']), getVirementHistory);
+router.get('/pin-request', isAuth, hasRole(['client']), renderPinRequest);
+router.post('/pin-request', isAuth, hasRole(['client']), processPinRequest);
 
 export default router;

@@ -1,4 +1,4 @@
-import {pool} from "../config/db.js";
+import pool from "../config/db.js";
 export const findAccountByClientId = async(clientId)=>{
     const [rows ] = await pool.Query("SELECT * FROM comptes WHERE client.id = ?", [clientId]);
     return rows;
