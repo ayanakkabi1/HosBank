@@ -12,3 +12,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 })
+app.use('/auth', loginRoutes);
+app.use('/client', clientRoutes);
