@@ -11,6 +11,8 @@ import {
 } from '../controllers/adminController.js';
 import { isAuth, hasRole } from '../middlewares/authmiddleware.js';
 
+import { renderClients, assignClient } from '../controllers/admin/clientController.js';
+
 const router = Router();
 
 
@@ -18,7 +20,10 @@ router.use(isAuth, hasRole(['admin']));
 
 
 router.get('/', renderAdminUsers);
+router.get('/dashboard', renderAdminUsers);
 router.get('/users', renderAdminUsers);
+router.get('/clients', renderClients);
+router.post('/clients/:clientId/assign', assignClient);
 
 
 router.post('/users', handleCreateUser);

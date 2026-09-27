@@ -28,7 +28,7 @@ export const processRegister = async (req, res) => {
 
         res.render('auth/register', {
             error: null,
-            success: 'Votre compte a été créé avec succès ! Un e-mail de confirmation vous a été envoyé. Veuillez cliquer sur le lien pour activer votre accès.',
+            success: 'Votre compte a été créé et activé avec succès ! Vous pouvez maintenant vous connecter directement.',
             formData: {}
         });
 

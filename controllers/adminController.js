@@ -65,7 +65,8 @@ export const handleUpdateUser = async (req, res) => {
 export const handleToggleUserStatus = async (req, res) => {
     try {
         const { id } = req.params;
-        const newStatus = await adminService.toggleUserStatus(id);
+        const requesterId = req.session.user?.id;
+        const newStatus = await adminService.toggleUserStatus(id, requesterId);
         const msg = newStatus === 'actif' ? 'Compte utilisateur activé avec succès.' : 'Compte utilisateur désactivé.';
         res.redirect(`/admin/users?tab=users&success=${encodeURIComponent(msg)}`);
     } catch (error) {

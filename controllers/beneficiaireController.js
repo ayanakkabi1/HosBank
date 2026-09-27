@@ -44,6 +44,36 @@ export const processAddBeneficiaire = async (req, res) => {
 };
 
 
+export const processUpdateBeneficiaire = async (req, res) => {
+    const { id } = req.params;
+    const { nom_beneficiaire, rib } = req.body;
+    const clientId = req.session.user.id;
+
+    try {
+        await beneficiaireService.updateBeneficiaire(id, nom_beneficiaire, rib, clientId);
+
+        const beneficiaires = await beneficiaireService.getBeneficiaire(clientId);
+
+        res.render('client/beneficiaires', {
+            user: req.session.user,
+            beneficiaires: beneficiaires,
+            error: null,
+            success: 'Bénéficiaire modifié avec succès !'
+        });
+
+    } catch (error) {
+        const beneficiaires = await beneficiaireService.getBeneficiaire(clientId);
+
+        res.status(400).render('client/beneficiaires', {
+            user: req.session.user,
+            beneficiaires: beneficiaires,
+            error: error.message,
+            success: null
+        });
+    }
+};
+
+
 export const processDeleteBeneficiaire = async (req, res) => {
     const { id } = req.params;
     const clientId = req.session.user.id;

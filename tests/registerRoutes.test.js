@@ -50,7 +50,7 @@ describe('registerRoute - HTTP Endpoints', () => {
             });
 
         expect(response.status).toBe(200);
-        expect(response.text).toContain('Votre compte a été créé avec succès');
+        expect(response.text).toContain('Votre compte a été créé et activé avec succès');
         expect(registerService.register).toHaveBeenCalled();
     });
 

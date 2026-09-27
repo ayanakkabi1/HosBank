@@ -33,6 +33,28 @@ export const createBeneficiaire = async (nomBeneficiaire, rib, clientId) => {
 };
 
 
+export const findBeneficiaireByIdAndClient = async (id, clientId) => {
+    const [rows] = await pool.query(
+        `SELECT id, nom_beneficiaire, rib, client_id 
+         FROM beneficiaires 
+         WHERE id = ? AND client_id = ?`,
+        [id, clientId]
+    );
+    return rows[0] || null;
+};
+
+
+export const updateBeneficiaire = async (id, nomBeneficiaire, rib, clientId) => {
+    const [result] = await pool.query(
+        `UPDATE beneficiaires 
+         SET nom_beneficiaire = ?, rib = ? 
+         WHERE id = ? AND client_id = ?`,
+        [nomBeneficiaire, rib, id, clientId]
+    );
+    return result.affectedRows > 0;
+};
+
+
 export const deleteBeneficiaire = async (id, clientId) => {
     const [result] = await pool.query(
         `DELETE FROM beneficiaires 
