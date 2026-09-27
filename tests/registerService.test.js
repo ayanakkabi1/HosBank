@@ -69,7 +69,7 @@ describe('registerService', () => {
                 42,
                 1000.00,
                 'courant',
-                'inactif'
+                'actif'
             );
         });
 

@@ -50,10 +50,6 @@ export const register = async (
         throw new Error('Le mot de passe doit contenir au moins 8 caractères.');
     }
 
-    if (!/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
-        throw new Error('Le mot de passe doit contenir au moins une lettre et un chiffre.');
-    }
-
     if (password !== passwordConfirmation) {
         throw new Error('Les mots de passe ne correspondent pas.');
     }
@@ -80,7 +76,7 @@ export const register = async (
 
     
     const defaultRib = generateRib();
-    await createCompte(defaultRib, userId, 1000.00, 'courant', 'inactif');
+    await createCompte(defaultRib, userId, 1000.00, 'courant', 'actif');
 
     
     await sendVerificationEmail(cleanEmail, verificationToken);
@@ -106,7 +102,7 @@ export const verifyEmailToken = async (token) => {
     
     const comptes = await getComptesByClientId(user.id);
     if (!comptes || comptes.length === 0) {
-        await createCompte(generateRib(), user.id, 1000.00, 'courant', 'inactif');
+        await createCompte(generateRib(), user.id, 1000.00, 'courant', 'actif');
     }
 
     return user;

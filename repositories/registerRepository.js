@@ -8,11 +8,11 @@ export const findUserByEmail = async(email)=>{
     return rows[0] || null;
 };
 
-export const createUser = async (nom, prenom, email, password, verificationToken) => {
+export const createUser = async (nom, prenom, email, password, verificationToken = null, statut = 'actif') => {
     const [result] = await pool.query(
         `INSERT INTO users (nom, prenom, email, password, statut, role, verification_token)
          VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [nom, prenom, email, password, 'en_attente', 'client', verificationToken]
+        [nom, prenom, email, password, statut, 'client', verificationToken]
     );
     return result.insertId;
 };

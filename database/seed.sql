@@ -6,7 +6,7 @@ START TRANSACTION;
 
 INSERT IGNORE INTO users (nom, prenom, email, password, role, statut)
 VALUES
-    ('Admin', 'HosBank', 'admin@hosbank.local', '$2b$10$5vxO59U3BCeDUb0rJM4sEuDTnNCzlbIOq2GRpjXniT/8E8v1aEhvy', 'admin', 'actif'),
+    ('Admin', 'HosBank', 'admin@hosbank.local', '$2b$10$XZmr9Z04vgNGlpOweQMjteBICz4La6AF0fc3vhCASxubHxSiYaZby', 'admin', 'actif'),
     ('Martin', 'Sofia', 'sofia.martin@hosbank.local', '$2b$10$5vxO59U3BCeDUb0rJM4sEuDTnNCzlbIOq2GRpjXniT/8E8v1aEhvy', 'charge_clientele', 'actif'),
     ('Benali', 'Aya', 'aya.benali@hosbank.local', '$2b$10$5vxO59U3BCeDUb0rJM4sEuDTnNCzlbIOq2GRpjXniT/8E8v1aEhvy', 'client', 'actif'),
     ('Dupont', 'Yanis', 'yanis.dupont@hosbank.local', '$2b$10$5vxO59U3BCeDUb0rJM4sEuDTnNCzlbIOq2GRpjXniT/8E8v1aEhvy', 'client', 'actif');

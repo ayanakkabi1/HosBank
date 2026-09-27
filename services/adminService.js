@@ -135,11 +135,16 @@ export const updateUser = async (id, { nom, prenom, email, role, statut }) => {
     return true;
 };
 
-export const toggleUserStatus = async (id) => {
+export const toggleUserStatus = async (id, requesterId) => {
     if (!id) throw new Error('ID utilisateur manquant.');
 
     const user = await adminRepository.getUserById(id);
     if (!user) throw new Error('Utilisateur introuvable.');
+
+    // Empêcher un administrateur de désactiver son propre compte
+    if (requesterId && Number(id) === Number(requesterId) && user.statut === 'actif') {
+        throw new Error('Vous ne pouvez pas désactiver votre propre compte administrateur.');
+    }
 
     const newStatus = user.statut === 'actif' ? 'inactif' : 'actif';
     await adminRepository.updateUserStatus(id, newStatus);

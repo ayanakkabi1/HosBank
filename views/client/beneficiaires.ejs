@@ -113,6 +113,111 @@
         .btn-back:hover {
             color: var(--gold-light);
         }
+        .beneficiaire-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-edit {
+            background: rgba(200, 169, 95, 0.12);
+            color: var(--gold-light);
+            border: 1px solid var(--gold-border);
+            padding: 6px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-edit:hover {
+            background: var(--gold-primary);
+            color: #0d1117;
+            transform: translateY(-1px);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.25s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 22px;
+            cursor: pointer;
+            line-height: 1;
+            padding: 4px;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--text-main);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .form-hint {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
     </style>
 </head>
 <body>
@@ -139,7 +244,6 @@
         <div class="page-title">Mes Bénéficiaires</div>
         <p class="page-subtitle">Gérez vos bénéficiaires pour exécuter vos virements bancaires en toute sérénité.</p>
 
-        
         <% if (error) { %>
             <div class="alert alert-danger"><%= error %></div>
         <% } %>
@@ -147,7 +251,6 @@
             <div class="alert alert-success"><%= success %></div>
         <% } %>
 
-        
         <div class="card">
             <div class="card-title">Ajouter un nouveau bénéficiaire</div>
             <form action="/client/beneficiaires" method="POST">
@@ -160,8 +263,12 @@
                             name="nom_beneficiaire"
                             class="form-control"
                             placeholder="ex: Mohamed Alami"
+                            pattern="^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$"
+                            title="Le nom doit contenir uniquement des lettres"
+                            oninput="this.value = this.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s'-]/g, '')"
                             required
                         >
+                        <div class="form-hint">Uniquement des lettres et espaces</div>
                     </div>
                     <div class="form-group" style="margin-bottom: 0;">
                         <label for="rib">RIB marocain (24 chiffres)</label>
@@ -171,9 +278,13 @@
                             name="rib"
                             class="form-control"
                             placeholder="ex: 230000123456789012345678"
+                            pattern="^\d{24}$"
                             maxlength="24"
+                            title="Le RIB doit contenir exactement 24 chiffres"
+                            oninput="this.value = this.value.replace(/\D/g, '')"
                             required
                         >
+                        <div class="form-hint">Exactement 24 chiffres</div>
                     </div>
                     <button type="submit" class="btn btn-primary" style="height: 42px;">+ Ajouter</button>
                 </div>
@@ -191,12 +302,22 @@
                             <span class="beneficiaire-nom"><%= b.nom_beneficiaire %></span>
                             <span class="beneficiaire-rib">RIB : <%= b.rib %></span>
                         </div>
-                        <form action="/client/beneficiaires/<%= b.id %>/delete" method="POST" style="margin: 0;">
-                            <button type="submit" class="btn btn-danger-outline btn-sm"
-                                onclick="return confirm('Voulez-vous supprimer ce bénéficiaire ?')">
-                                Supprimer
+                        <div class="beneficiaire-actions">
+                            <button 
+                                type="button" 
+                                class="btn-edit btn-trigger-edit"
+                                data-id="<%= b.id %>"
+                                data-nom="<%= b.nom_beneficiaire %>"
+                                data-rib="<%= b.rib %>">
+                                Modifier
                             </button>
-                        </form>
+                            <form action="/client/beneficiaires/<%= b.id %>/delete" method="POST" style="margin: 0;">
+                                <button type="submit" class="btn btn-danger-outline btn-sm"
+                                    onclick="return confirm('Voulez-vous supprimer ce bénéficiaire ?')">
+                                    Supprimer
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 <% }); %>
             </div>
@@ -206,5 +327,81 @@
             </div>
         <% } %>
     </main>
+
+    <!-- Modal Modification Bénéficiaire -->
+    <div id="editModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">Modifier le bénéficiaire</div>
+                <button type="button" class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form id="editForm" method="POST">
+                <div class="form-group">
+                    <label for="edit_nom_beneficiaire">Nom complet du titulaire</label>
+                    <input
+                        type="text"
+                        id="edit_nom_beneficiaire"
+                        name="nom_beneficiaire"
+                        class="form-control"
+                        pattern="^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$"
+                        title="Le nom doit contenir uniquement des lettres"
+                        oninput="this.value = this.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s'-]/g, '')"
+                        required
+                    >
+                    <div class="form-hint">Uniquement des lettres et espaces</div>
+                </div>
+                <div class="form-group">
+                    <label for="edit_rib">RIB marocain (24 chiffres)</label>
+                    <input
+                        type="text"
+                        id="edit_rib"
+                        name="rib"
+                        class="form-control"
+                        pattern="^\d{24}$"
+                        maxlength="24"
+                        title="Le RIB doit contenir exactement 24 chiffres"
+                        oninput="this.value = this.value.replace(/\D/g, '')"
+                        required
+                    >
+                    <div class="form-hint">Exactement 24 chiffres</div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openEditModal(id, nom, rib) {
+            const form = document.getElementById('editForm');
+            form.action = `/client/beneficiaires/${id}/update`;
+            document.getElementById('edit_nom_beneficiaire').value = nom;
+            document.getElementById('edit_rib').value = rib;
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+
+        document.querySelectorAll('.btn-trigger-edit').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const nom = this.getAttribute('data-nom');
+                const rib = this.getAttribute('data-rib');
+                openEditModal(id, nom, rib);
+            });
+        });
+
+        // Fermer le modal en cliquant à l'extérieur
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('editModal');
+            if (e.target === modal) {
+                closeEditModal();
+            }
+        });
+    </script>
 </body>
 </html>
