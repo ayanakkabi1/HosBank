@@ -1,0 +1,30 @@
+{
+  "name": "hosbank",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start" :"node app.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "mysql2": "^3.24.4",
+    "nodemailer": "^10.0.10"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.6.0",
+    "jest": "^30.5.1",
+    "nodemon": "^3.1.14",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^4.3.3"
+  }
+}
