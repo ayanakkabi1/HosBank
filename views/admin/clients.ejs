@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affectation des clients - HosBank Private Banking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/theme.css">
+    <style>
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 24px 64px;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13.5px;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            color: var(--gold-light);
+        }
+
+        .page-header {
+            margin-bottom: 28px;
+        }
+
+        .page-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .assign-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .assign-form select {
+            padding: 7px 10px;
+            font-size: 13px;
+            width: auto;
+            min-width: 160px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <a href="/admin/users" class="navbar-brand">
+            <div class="brand-icon">H</div>
+            <span>Hos<span>Bank</span></span>
+        </a>
+
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <a href="/admin/users" class="btn btn-outline btn-sm">Gestion des Utilisateurs</a>
+            <a href="/auth/logout" class="btn-logout">Déconnexion</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <a href="/admin/users" class="btn-back">← Retour à l'administration</a>
+
+        <div class="page-header">
+            <h1 class="page-title">Affectation des Clients aux Chargés</h1>
+            <p class="page-subtitle">Associez chaque client à un chargé de clientèle dédié pour un suivi personnalisé.</p>
+        </div>
+
+        <% if (success) { %>
+            <div class="alert alert-success" role="status"><%= success %></div>
+        <% } %>
+        <% if (error) { %>
+            <div class="alert alert-danger" role="alert"><%= error %></div>
+        <% } %>
+
+        <div class="card" style="padding: 0; overflow: hidden;">
+            <div class="card-header" style="padding: 20px 24px 14px; margin-bottom: 0;">
+                <h2 class="card-title">Portefeuille Clients (<%= clients.length %>)</h2>
+            </div>
+
+            <% if (clients.length === 0) { %>
+                <div style="padding: 40px; text-align: center; color: var(--text-muted);">
+                    Aucun client à afficher pour le moment.
+                </div>
+            <% } else { %>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>E-mail</th>
+                                <th>Chargé actuel</th>
+                                <th>Nouvelle affectation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% clients.forEach((client) => { %>
+                                <tr>
+                                    <td><strong><%= client.nom %> <%= client.prenom %></strong></td>
+                                    <td><%= client.email %></td>
+                                    <td>
+                                        <% if (client.charge_nom) { %>
+                                            <span class="badge badge-role-charge">
+                                                <%= client.charge_nom %> <%= client.charge_prenom %>
+                                            </span>
+                                        <% } else { %>
+                                            <span class="badge badge-warning">Non affecté</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <form method="post" action="/admin/clients/<%= client.id %>/assign" class="assign-form">
+                                            <select id="charge-<%= client.id %>" name="chargeId" class="form-control" required>
+                                                <option value="">-- Choisir un chargé --</option>
+                                                <% chargeClients.forEach((chargeClient) => { %>
+                                                    <option
+                                                        value="<%= chargeClient.id %>"
+                                                        <%= client.charge_id === chargeClient.id ? 'selected' : '' %>>
+                                                        <%= chargeClient.nom %> <%= chargeClient.prenom %>
+                                                    </option>
+                                                <% }); %>
+                                            </select>
+                                            <button type="submit" class="btn btn-primary btn-sm">Affecter</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } %>
+        </div>
+    </main>
+</body>
+</html>

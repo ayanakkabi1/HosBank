@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erreur - HosBank Private Banking</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/theme.css">
+    <style>
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+        }
+
+        .error-card {
+            width: 100%;
+            max-width: 480px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-card);
+            border-radius: var(--radius-md);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+        }
+
+        .error-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--danger), transparent);
+        }
+
+        .error-header {
+            padding: 32px 28px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+            background: linear-gradient(180deg, rgba(239, 68, 68, 0.04) 0%, transparent 100%);
+        }
+
+        .brand-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 800;
+            color: #0B0B0B;
+        }
+
+        .brand-text {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .brand-text span { color: var(--gold-primary); }
+
+        .error-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--danger-bg);
+            border: 1px solid var(--danger-border);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--danger);
+            margin-bottom: 16px;
+        }
+
+        .error-icon svg { width: 36px; height: 36px; }
+
+        .error-code {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--danger);
+            margin-bottom: 6px;
+        }
+
+        .error-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 0;
+        }
+
+        .error-body {
+            padding: 28px;
+        }
+
+        .error-message {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            margin-bottom: 28px;
+            background: var(--danger-bg);
+            border: 1px solid var(--danger-border);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            text-align: left;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-card">
+        <div class="error-header">
+            <div class="brand-wrap">
+                <div class="brand-icon">H</div>
+                <div class="brand-text">Hos<span>Bank</span></div>
+            </div>
+
+            <div class="error-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+            </div>
+
+            <div class="error-code">Erreur système</div>
+            <h1 class="error-title">Une erreur est survenue</h1>
+        </div>
+
+        <div class="error-body">
+            <div class="error-message">
+                <%= typeof message !== 'undefined' && message
+                    ? message
+                    : 'Une erreur inattendue s\'est produite. Veuillez réessayer ou contacter le support.' %>
+            </div>
+
+            <div class="error-actions">
+                <a href="javascript:history.back()" class="btn btn-outline">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    Retour
+                </a>
+                <a href="/client/dashboard" class="btn btn-primary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Tableau de bord
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
